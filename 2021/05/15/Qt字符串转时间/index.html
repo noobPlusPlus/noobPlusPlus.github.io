@@ -59,7 +59,7 @@
   </script>
   <script  src="/noob/js/utils.js" ></script>
   <script  src="/noob/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body>
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      549 字
+      571 字
     </span>
   
 
@@ -230,28 +230,32 @@
               <blockquote>
 <p>Qt字符串转时间本地语言问题</p>
 </blockquote>
-<a id="more"></a>
+<span id="more"></span>
 
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>最近写了个解析git日志生成周报的“小”程序，需要解析git时间。</p>
 <p>由于对git命令不太熟，决定采用<code>QDateTime :: fromString() </code>转时间，但是该函数返回了空值。</p>
 <p>百度了半天也没找到答案，我想可能大家是没我这么粗心吧。。。</p>
 <p>代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><br>QString gitCmd = <span class="hljs-string">&quot;git log master&quot;</span>; <span class="hljs-comment">//过滤条件未写</span><br><span class="hljs-function">QProcess <span class="hljs-title">p</span><span class="hljs-params">(<span class="hljs-keyword">this</span>)</span></span>;<br>p.start(<span class="hljs-string">&quot;cmd&quot;</span>, QStringList() &lt;&lt; <span class="hljs-string">&quot;/c&quot;</span> &lt;&lt; gitCmd);<br>p.waitForStarted();<br>p.waitForFinished();<br>QString result = p.readAllStandardOutput();<br><br></code></pre></td></tr></table></figure>
+
 <p><code>result</code>中的时间格式为<code>Sun May 9 17:19:49 2021 +0800</code></p>
 <p>只考虑<code>+0800</code>前面的部分<code>Sun May 9 17:19:49 2021</code></p>
 <p>查阅Qt assistant,发现可以采用如下代码将其转为QDateTime</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">QString <span class="hljs-title">timeString</span><span class="hljs-params">(<span class="hljs-string">&quot;Sun May 9 17:19:49 2021&quot;</span>)</span></span>;<br>QDateTime time = QDateTime::fromString(timeString, <span class="hljs-string">&quot;ddd MMM d hh:mm:ss yyyy&quot;</span>);<br>qDebug() &lt;&lt; time.toString(<span class="hljs-string">&quot;yyyyMMdd&quot;</span>);<br></code></pre></td></tr></table></figure>
+
 <p>发现qDebug()输出为空。</p>
 <p>仔细查看Qt assistant, 发现QDateTime::fromString有如下的Note:</p>
 <blockquote>
 <p>Note: Unlike the other version of this function, day and month names must be given in the user’s local language. It is only possible to use the English names if the user’s language is English.</p>
 </blockquote>
-<p>原来是要使用本地语言才可以得到正确结果。</p>
+<p>原来是要使用本地语言才可以得到正确结果，所以需要形如<code>周日 5月 23 20:17:39 2021</code>的字符串才可以。</p>
 <h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><h2 id="使用QLocale-toDateTime"><a href="#使用QLocale-toDateTime" class="headerlink" title="使用QLocale::toDateTime()"></a>使用QLocale::toDateTime()</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">QString <span class="hljs-title">timeString</span><span class="hljs-params">(<span class="hljs-string">&quot;Sun May 9 17:19:49 2021&quot;</span>)</span></span>;<br><span class="hljs-function">QLocale <span class="hljs-title">loc</span><span class="hljs-params">(QLocale::English)</span></span>;<br>QDateTime dateTime = loc.toDateTime(timeString, <span class="hljs-string">&quot;ddd MMM d hh:mm:ss yyyy&quot;</span>);<br>qDebug() &lt;&lt; dateTime.toString(<span class="hljs-string">&quot;yyyyMMdd&quot;</span>);<br></code></pre></td></tr></table></figure>
+
 
 
 <h2 id="使用git命令格式化时间字符串"><a href="#使用git命令格式化时间字符串" class="headerlink" title="使用git命令格式化时间字符串"></a>使用git命令格式化时间字符串</h2><p>由于对git命令不熟，git官网<a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2">Git - 查看提交历史 (git-scm.com)</a>也没有详细介绍如果格式化时间字符串， 而且加上时间格式化语句还出现了其他过滤条件不起作用的问题，所以开始时一心想着用代码去解决该问题，后来发现还是直接用命令格式化最简单：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">QString gitCmd = <span class="hljs-string">&quot;git log master&quot;</span>; <span class="hljs-comment">//过滤条件未写</span><br><span class="hljs-keyword">const</span> QString logDateFormat = <span class="hljs-string">&quot; --date=format:%Y-%m-%d-%H-%M-%S &quot;</span>;<br>gitCmd += logDateFormat;<br></code></pre></td></tr></table></figure>
+
 <p>如果还有其他过滤条件，应该将其放到<code>logDateFormat</code>前，否则可能导致过滤条件不起作用的问题。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>Qt最好的资料还是 Qt assistant, 百度半天不如耐心看文档。</li>
@@ -289,9 +293,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/noob/2021/05/16/%E4%BB%A3%E7%A0%81%E4%B8%AD%E7%9A%84-if%E2%80%A6else-%E6%9D%82%E8%B0%88/">
+                      <a href="/noob/2021/05/18/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E4%B8%8EQt%E7%B1%BB%E5%8F%8D%E5%B0%841/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">代码中的 if…else 杂谈</span>
+                        <span class="hidden-mobile">简单工厂模式与Qt类反射1</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

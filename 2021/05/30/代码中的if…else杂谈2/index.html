@@ -1,0 +1,601 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/noob/img/favicon.png">
+  <link rel="icon" type="image/png" href="/noob/melody-favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="l">
+  <meta name="keywords" content="">
+  <title>代码中的if…else杂谈2 - noob</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/noob/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/noob/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"gitee.com","root":"/noob/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":"82365797a7f92a0aa6495822ee0829a4","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/noob/js/utils.js" ></script>
+  <script  src="/noob/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/noob/">&nbsp;<strong>noob就是菜鸡</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/noob/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="代码中的if…else杂谈2">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-05-30 11:12" pubdate>
+        2021年5月30日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">代码中的if…else杂谈2</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>if-else嵌套过深的几个解决方法-重载&lt;为主要例子。</p>
+<span id="more"></span>
+</blockquote>
+<p><code>std::map</code>是我们常用的控件，虽然<code>c++11</code>后引入<code>std::unordered_map</code>减少了其“出镜率”，但是在<code>key</code>有序或对内存使用有严格要求时，<code>std::map</code>仍有其用武之地；<code>std::map</code>的内部实现是<code>红黑树</code>，<code>std::unordered_map</code>的实现方式是<code>哈希表</code>（也称<code>散列表</code>）</p>
+<blockquote>
+<p>std::map 是有序键值对容器，它的元素的键是唯一的。用比较函数 Compare 排序键。搜索、移除和插入操作拥有对数复杂度。 map 通常实现为红黑树。</p>
+<p>在每个标准库使用比较 (Compare) 概念的位置，以等价关系检验唯一性。不精确而言，若二个对象 a 与 b 互相比较不小于对方 ： !comp(a, b) &amp;&amp; !comp(b, a) ，则认为它们等价（非唯一）。</p>
+<p>unordered_map 是关联容器，含有带唯一键的键-值 pair 。搜索、插入和元素移除拥有平均常数时间复杂度。</p>
+<p>元素在内部不以任何特定顺序排序，而是组织进桶中。元素放进哪个桶完全依赖于其键的哈希。这允许对单独元素的快速访问，因为一旦计算哈希，则它准确指代元素所放进的桶。</p>
+<p>–引自<a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/container/map">std::map - cppreference.com</a>和<a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/container/unordered_map">std::unordered_map - cppreference.com</a></p>
+</blockquote>
+<p>由上文总结可得：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>std::map</th>
+<th>std::unordered_map</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>有序性</td>
+<td><strong>有序</strong></td>
+<td>无序</td>
+</tr>
+<tr>
+<td>内部实现</td>
+<td>红黑树</td>
+<td>哈希表</td>
+</tr>
+<tr>
+<td>平均时间复杂度</td>
+<td>O(logN)</td>
+<td><strong>O(1)</strong></td>
+</tr>
+<tr>
+<td>内存占用</td>
+<td></td>
+<td>高，类似于vector,需要提前申请内存，用以存储哈希表</td>
+</tr>
+<tr>
+<td>要求</td>
+<td>实现 &lt;</td>
+<td>有哈希函数</td>
+</tr>
+</tbody></table>
+<h2 id="重载-lt"><a href="#重载-lt" class="headerlink" title="重载 &lt;"></a>重载 &lt;</h2><p>有如下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point3D</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-keyword">int</span> x;<br>	<span class="hljs-keyword">int</span> y;<br>	<span class="hljs-keyword">int</span> z;<br>&#125;;<br><br><span class="hljs-built_in">std</span>::<span class="hljs-built_in">map</span>&lt;Point3D, <span class="hljs-keyword">double</span>&gt; pointMap;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> *argv[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-function">QCoreApplication <span class="hljs-title">a</span><span class="hljs-params">(argc, argv)</span></span>;<br>	Point3D point1;<br>	point1.x = <span class="hljs-number">1</span>;<br>	point1.y = <span class="hljs-number">2</span>;<br>	point1.z = <span class="hljs-number">3</span>;<br>	pointMap.insert(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;Point3D, <span class="hljs-keyword">double</span>&gt;(point1, <span class="hljs-number">1.0</span>));<br><br>    <span class="hljs-keyword">return</span> a.exec();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>无法通过编译，在<code>VS2017 X64</code>下提示如下错误：</p>
+<blockquote>
+<p>错误    C2678    二进制“&lt;”: 没有找到接受“const _Ty”类型的左操作数的运算符(或没有可接受的转换)</p>
+</blockquote>
+<p>很显然，<code>Point3D</code>需要重载<code>&lt;</code>。</p>
+<h3 id="第一次重载-lt"><a href="#第一次重载-lt" class="headerlink" title="第一次重载  &lt;"></a>第一次重载  &lt;</h3><p>记得第一次遇到这问题时，系统某个数据结构是个<strong>三段式</strong>，第一次写出了类似这样的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point3D</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-keyword">int</span> x;<br>	<span class="hljs-keyword">int</span> y;<br>	<span class="hljs-keyword">int</span> z;<br>	<span class="hljs-keyword">bool</span> <span class="hljs-keyword">operator</span> &lt; (<span class="hljs-keyword">const</span> Point3D&amp; rhs) <span class="hljs-keyword">const</span><br>	&#123;<br>		<span class="hljs-keyword">if</span> (x &lt; rhs.x)<br>		&#123;<br>			<span class="hljs-keyword">if</span> (y &lt; rhs.y)<br>			&#123;<br>				<span class="hljs-keyword">if</span> (z &lt; rhs.z)<br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>				&#125;<br>				<span class="hljs-keyword">else</span><br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>				&#125;<br>			&#125;<br>			<span class="hljs-keyword">else</span><br>			&#123;<br>				<span class="hljs-keyword">if</span> (z &lt; rhs.z)<br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>				&#125;<br>				<span class="hljs-keyword">else</span><br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>				&#125;<br>			&#125;<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			<span class="hljs-keyword">if</span> (y &lt; rhs.y)<br>			&#123;<br>				<span class="hljs-keyword">if</span> (z &lt; rhs.z)<br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>				&#125;<br>				<span class="hljs-keyword">else</span><br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>				&#125;<br>			&#125;<br>			<span class="hljs-keyword">else</span><br>			&#123;<br>				<span class="hljs-keyword">if</span> (z &lt; rhs.z)<br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>				&#125;<br>				<span class="hljs-keyword">else</span><br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>				&#125;<br>			&#125;<br>		&#125;<br>	&#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>全文搜索<code>operator &lt;</code>-复制-粘贴老代码-修改，一气呵成。</p>
+<h3 id="方法1：合并条件"><a href="#方法1：合并条件" class="headerlink" title="方法1：合并条件"></a>方法1：合并条件</h3><p>通过观察得知，最外层的<code>else</code>，所有路径都返回<code>false</code>,所以可以把四种情况合并为一种，次外层也同理，可将<code>第一次重载&lt;</code>代码简化为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point3D</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-keyword">int</span> x;<br>	<span class="hljs-keyword">int</span> y;<br>	<span class="hljs-keyword">int</span> z;<br>	<span class="hljs-keyword">bool</span> <span class="hljs-keyword">operator</span> &lt; (<span class="hljs-keyword">const</span> Point3D&amp; rhs) <span class="hljs-keyword">const</span><br>	&#123;<br>		<span class="hljs-keyword">if</span> (x &lt; rhs.x)<br>		&#123;<br>			<span class="hljs-keyword">if</span> (y &lt; rhs.y)<br>			&#123;<br>				<span class="hljs-keyword">if</span> (z &lt; rhs.z)<br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>				&#125;<br>				<span class="hljs-keyword">else</span><br>				&#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>				&#125;<br>			&#125;<br>			<span class="hljs-keyword">else</span><br>			&#123;<br>				<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>			&#125;<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>		&#125;	<br>	&#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>通过合并条件，将原来的八条路径降为了四条，方便后期阅读和问题修复。</p>
+<p>推广一下，对于可以合并的条件应该将其合并，这样能减少路径，降低阅读、维护、单元测试难度。特别是某些只有if没有else的语句，合并后不仅能减少路径，甚至还能减少嵌套层数，比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (point1.x == <span class="hljs-number">3</span>)<br>&#123;<br>	<span class="hljs-keyword">if</span> (point1.y == <span class="hljs-number">4</span>)<br>	&#123;<br>		<span class="hljs-keyword">if</span> (point1.z == <span class="hljs-number">5</span>)<br>		&#123;<br>			...<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以合并为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (point1.x == <span class="hljs-number">3</span> &amp;&amp; point1.y == <span class="hljs-number">4</span> &amp;&amp; point1.z == <span class="hljs-number">5</span>)<br>&#123;<br>	...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="方法2：提前return"><a href="#方法2：提前return" class="headerlink" title="方法2：提前return"></a>方法2：提前return</h3><p>分析可得，上述方法中的，如果最外层<code>else</code>成立，就直接就可以返回<code>false</code>了，次外层也同理。所以可以采用<code>提前return</code>的方法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point3D</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-keyword">int</span> x;<br>	<span class="hljs-keyword">int</span> y;<br>	<span class="hljs-keyword">int</span> z;<br>	<span class="hljs-keyword">bool</span> <span class="hljs-keyword">operator</span> &lt; (<span class="hljs-keyword">const</span> Point3D&amp; rhs) <span class="hljs-keyword">const</span><br>	&#123;<br>		<span class="hljs-keyword">if</span> (x &gt;= rhs.x)<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><br>		<span class="hljs-keyword">if</span> (y &gt;= rhs.y)<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><br>		<span class="hljs-keyword">return</span> z &lt; rhs.z;<br>	&#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>该方法不仅减少了路径条数，也降低了嵌套层数。</p>
+<p>对于某些条件不符合需要立即返回的应立即返回，比如判断指针为<code>nullptr</code>、<code>ComboBox</code>的<code>index == -1</code>，<code>std::vector::size()== 0</code>等。</p>
+<p>提交代码-颇费~</p>
+<p>没想到C++11后，该方法又有点跟不上时代了</p>
+<h3 id="方法3：C-11方法"><a href="#方法3：C-11方法" class="headerlink" title="方法3：C++11方法"></a>方法3：C++11方法</h3><p>C++引入了<code>std::tuple</code> ,有时<em>cppreference中文版</em>真是难懂，这里贴出来其英文版上关于<code>std::tuple</code>的介绍</p>
+<blockquote>
+<p>Class template <code>std::tuple</code> is a fixed-size collection of heterogeneous values. It is a generalization of <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/pair">std::pair</a>.</p>
+</blockquote>
+<p><code>std::tuple</code>已经重载了如下操作符</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">operator</span>==<br><span class="hljs-keyword">operator</span>!=<br><span class="hljs-keyword">operator</span>&lt;<br><span class="hljs-keyword">operator</span>&lt;=<br><span class="hljs-keyword">operator</span>&gt;<br><span class="hljs-keyword">operator</span>&gt;=<br><span class="hljs-keyword">operator</span>&lt;=&gt;(C++<span class="hljs-number">20</span>)<br></code></pre></td></tr></table></figure>
+
+<p>关于 <code>&lt;</code> 有如下介绍：</p>
+<blockquote>
+<p>Compares <code>lhs</code> and <code>rhs</code> lexicographically by operator&lt;, that is, compares the first elements, if they are equivalent, compares the second elements, if those are equivalent, compares the third elements, and so on.</p>
+<p>For non-empty tuples, (3) is equivalent to</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">std</span>::get&lt;<span class="hljs-number">0</span>&gt;(lhs) &lt; <span class="hljs-built_in">std</span>::get&lt;<span class="hljs-number">0</span>&gt;(rhs)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br><span class="hljs-keyword">if</span> (<span class="hljs-built_in">std</span>::get&lt;<span class="hljs-number">0</span>&gt;(rhs) &lt; <span class="hljs-built_in">std</span>::get&lt;<span class="hljs-number">0</span>&gt;(lhs)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><span class="hljs-keyword">if</span> (<span class="hljs-built_in">std</span>::get&lt;<span class="hljs-number">1</span>&gt;(lhs) &lt; <span class="hljs-built_in">std</span>::get&lt;<span class="hljs-number">1</span>&gt;(rhs)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br><span class="hljs-keyword">if</span> (<span class="hljs-built_in">std</span>::get&lt;<span class="hljs-number">1</span>&gt;(rhs) &lt; <span class="hljs-built_in">std</span>::get&lt;<span class="hljs-number">1</span>&gt;(lhs)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>...<br><span class="hljs-keyword">return</span> <span class="hljs-built_in">std</span>::get&lt;N - <span class="hljs-number">1</span>&gt;(lhs) &lt; <span class="hljs-built_in">std</span>::get&lt;N - <span class="hljs-number">1</span>&gt;(rhs);<br></code></pre></td></tr></table></figure>
+</blockquote>
+<p>可有看得出，他也是通过提前return实现的。</p>
+<p>所以我们可以借助<code>std::tie</code>,创造两个临时的<code>std::tuple</code> ，让<code>std::tuple</code>们自己去比较大小。</p>
+<blockquote>
+<p><code>std::tie</code>：Creates a tuple of lvalue references to its arguments or instances of <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/tuple/ignore">std::ignore</a>.</p>
+</blockquote>
+<p>所以在<code>c++11</code> -<code>c++17</code>版本中，<code>struct</code>重载<code>&lt;</code>，可以最终简化为:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Point3D</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-keyword">int</span> x;<br>	<span class="hljs-keyword">int</span> y;<br>	<span class="hljs-keyword">int</span> z;<br><br>	<span class="hljs-keyword">bool</span> <span class="hljs-keyword">operator</span> &lt; (<span class="hljs-keyword">const</span> Point3D&amp; rhs) <span class="hljs-keyword">const</span><br>	&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-built_in">std</span>::tie(x, y, z) &lt; <span class="hljs-built_in">std</span>::tie(rhs.x, rhs.y, rhs.z);<br>	&#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>从<code>C++20</code>起，可以使用新操作符<code>&lt;=&gt;</code>代替被废弃的<code>&lt;</code></p>
+<blockquote>
+<p>The <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, and <code>!=</code> operators are <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/operators#Relational_operators">synthesized</a> from <code>operator&lt;=&gt;</code> and <code>operator==</code> respectively. (since C++20)</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/container/map">cppreference-map</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/container/unordered_map">cppreference-unordered_map</a>
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/tuple">cppreference-tuple</a>
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/tuple/tie">cppreference-tie</a>
+<a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/noob/categories/C/">C++</a>
+                    
+                      <a class="hover-with-bg" href="/noob/categories/C/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">编码规范</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/noob/tags/C/">C++</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/noob/2021/05/31/%E4%BB%A3%E7%A0%81%E4%B8%AD%E7%9A%84if%E2%80%A6else%E6%9D%82%E8%B0%883/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">代码中的if…else杂谈3</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/noob/2021/05/29/%E4%BB%A3%E7%A0%81%E4%B8%AD%E7%9A%84if%E2%80%A6else%E6%9D%82%E8%B0%881/">
+                        <span class="hidden-mobile">代码中的if…else杂谈1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/noob/js/debouncer.js" ></script>
+<script  src="/noob/js/events.js" ></script>
+<script  src="/noob/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/noob/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/noob/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/noob/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?82365797a7f92a0aa6495822ee0829a4";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/noob/js/boot.js" ></script>
+
+
+
+</body>
+</html>

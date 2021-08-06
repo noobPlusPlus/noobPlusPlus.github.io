@@ -1,0 +1,537 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/noob/img/favicon.png">
+  <link rel="icon" type="image/png" href="/noob/melody-favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="l">
+  <meta name="keywords" content="">
+  <title>Qt处理耗时任务，防止界面假死的两个简单写法 - noob</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/noob/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/noob/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"gitee.com","root":"/noob/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":"82365797a7f92a0aa6495822ee0829a4","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/noob/js/utils.js" ></script>
+  <script  src="/noob/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/noob/">&nbsp;<strong>noob就是菜鸡</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/noob/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/noob/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Qt处理耗时任务，防止界面假死的两个简单写法">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-08-06 19:57" pubdate>
+        2021年8月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      961 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Qt处理耗时任务，防止界面假死的两个简单写法</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>借助<code>QtConcurrent</code>和<code>QApplication::processEvents()</code>简化处理耗时任务以防界面假死。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>有如下需求</p>
+<p>点击<code>开始</code>按钮后，执行耗时操作，该按钮<code>进行中</code>后的<code>.</code>的数量随时间变化</p>
+<p><img src="image/start.png" srcset="/noob/img/loading.gif" alt="start"></p>
+<p><img src="image/doing.png" srcset="/noob/img/loading.gif" alt="doing"></p>
+<p>代码如下</p>
+<p><code>mainwindow.h</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">ifndef</span> MAINWINDOW_H</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MAINWINDOW_H</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;QMainWindow&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;QCloseEvent&gt;</span></span><br><br><span class="hljs-keyword">namespace</span> Ui &#123;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainWindow</span>;</span><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainWindow</span> :</span> <span class="hljs-keyword">public</span> QMainWindow<br>&#123;<br>    Q_OBJECT<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">MainWindow</span><span class="hljs-params">(QWidget *parent = <span class="hljs-literal">nullptr</span>)</span></span>;<br>    ~MainWindow();<br><br><span class="hljs-keyword">private</span>:<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">doSomeThing0</span><span class="hljs-params">()</span></span>;<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">toDoOneThing</span><span class="hljs-params">(<span class="hljs-keyword">int</span> _index)</span></span>;<br><br><span class="hljs-keyword">private</span>:<br>    Ui::MainWindow *ui;<br><br>	<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;QString&gt; DOT_VECTOR =<br>	&#123;<br>		<span class="hljs-string">&quot;.&quot;</span>,<br>		<span class="hljs-string">&quot;..&quot;</span>,<br>		<span class="hljs-string">&quot;...&quot;</span>,<br>		<span class="hljs-string">&quot;....&quot;</span>,<br>		<span class="hljs-string">&quot;.....&quot;</span>,<br>	&#125;;<br><br>	<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> SLEEP_TIME = <span class="hljs-number">20</span>;<br>&#125;;<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> <span class="hljs-comment">// MAINWINDOW_H</span></span><br></code></pre></td></tr></table></figure>
+
+<p><code>mainwindow.cpp</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;mainwindow.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;ui_mainwindow.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;QtConcurrent&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;QThread&gt;</span></span><br><br>MainWindow::MainWindow(QWidget *parent) :<br>    QMainWindow(parent),<br>    ui(<span class="hljs-keyword">new</span> Ui::MainWindow)<br>&#123;<br>    ui-&gt;setupUi(<span class="hljs-keyword">this</span>);<br>	connect(ui-&gt;pushButton, &amp;QPushButton::clicked, [=]() &#123;<br>		ui-&gt;pushButton-&gt;setEnabled(<span class="hljs-literal">false</span>);<br><br>		doSomeThing0();<br><br>		ui-&gt;pushButton-&gt;setText(<span class="hljs-string">u8&quot;开始&quot;</span>);<br>		ui-&gt;pushButton-&gt;setEnabled(<span class="hljs-literal">true</span>);<br>	&#125;);<br>&#125;<br><br>MainWindow::~MainWindow()<br>&#123;<br>    <span class="hljs-keyword">delete</span> ui;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MainWindow::doSomeThing0</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10000</span>; i++)<br>	&#123;<br>		toDoOneThing(i);<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MainWindow::toDoOneThing</span><span class="hljs-params">(<span class="hljs-keyword">int</span> _index)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-comment">//变化按钮文字后面&quot;.&quot;的个数</span><br>	QString buttonText = <span class="hljs-string">u8&quot;进行中&quot;</span>;<br>	buttonText += DOT_VECTOR[_index / <span class="hljs-number">20</span> % DOT_VECTOR.size()];<br>	ui-&gt;pushButton-&gt;setText(buttonText);<br><br>	<span class="hljs-comment">//模拟耗时操作</span><br>	QThread::msleep(SLEEP_TIME);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>以上代码运行后点击<code>开始</code>，界面假死。</p>
+<p>很多情况下，我们要在界面种处理某些耗时的操作，如果直接调用的话，主界面就会卡死，一般来说通过多线程可以解决该问题，包括最传统的<code>run</code>()和新式的<code>QObject::moveToThread()</code>具体可参考该文章<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/53270619">Qt 多线程编程之敲开 QThread 类的大门 - 知乎 (zhihu.com)</a></p>
+<p>有时候耗时操作逻辑很简单，代码也没有几行，单独封装一个类有点麻烦，有没有更省事的方法呢？</p>
+<h2 id="单线程方式"><a href="#单线程方式" class="headerlink" title="单线程方式"></a>单线程方式</h2><p>可以单线程借助<code>QApplication::processEvents()</code>实现以上需求：</p>
+<p><code>mainwindow.h</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><br><span class="hljs-keyword">private</span>:<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">doSomeThing0</span><span class="hljs-params">()</span></span>;<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">doSomeThing1</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//新增</span><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">toDoOneThing</span><span class="hljs-params">(<span class="hljs-keyword">int</span> _index)</span></span>;<br><br></code></pre></td></tr></table></figure>
+
+<p><code>mainwindow.cpp</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;mainwindow.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;ui_mainwindow.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;QtConcurrent&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;QThread&gt;</span></span><br><br>MainWindow::MainWindow(QWidget *parent) :<br>    QMainWindow(parent),<br>    ui(<span class="hljs-keyword">new</span> Ui::MainWindow)<br>&#123;<br>    ui-&gt;setupUi(<span class="hljs-keyword">this</span>);<br>	connect(ui-&gt;pushButton, &amp;QPushButton::clicked, [=]() &#123;<br>		ui-&gt;pushButton-&gt;setEnabled(<span class="hljs-literal">false</span>);<br><br>		doSomeThing1(); <span class="hljs-comment">//调用doSomeThing1()</span><br><br>		ui-&gt;pushButton-&gt;setText(<span class="hljs-string">u8&quot;开始&quot;</span>);<br>		ui-&gt;pushButton-&gt;setEnabled(<span class="hljs-literal">true</span>);<br>	&#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MainWindow::doSomeThing0</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10000</span>; i++)<br>	&#123;<br>		toDoOneThing(i);<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MainWindow::doSomeThing1</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10000</span>; i++)<br>	&#123;<br>		toDoOneThing(i);<br>		QApplication::processEvents(); <span class="hljs-comment">//新增</span><br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>可以看出<code>doSomeThing1()</code>比<code>doSomeThing0()</code>只多一行代码。</p>
+<h2 id="多线程方式"><a href="#多线程方式" class="headerlink" title="多线程方式"></a>多线程方式</h2><p>这里使用<code>QtConcurrent::run()</code>函数，实现起来相当简洁：</p>
+<p><code>.pro</code></p>
+<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fix"><span class="hljs-attr">QT +</span>=<span class="hljs-string"> concurrent</span><br></code></pre></td></tr></table></figure>
+
+<p><code>mainwindow.h</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">private</span>:<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">doSomeThing0</span><span class="hljs-params">()</span></span>;<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">doSomeThing2</span><span class="hljs-params">()</span></span>;<span class="hljs-comment">//新增</span><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">toDoOneThing</span><span class="hljs-params">(<span class="hljs-keyword">int</span> _index)</span></span>;<br><br></code></pre></td></tr></table></figure>
+
+<p><code>mainwindow.cpp</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;mainwindow.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;ui_mainwindow.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;QtConcurrent&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;QThread&gt;</span></span><br><br>MainWindow::MainWindow(QWidget *parent) :<br>    QMainWindow(parent),<br>    ui(<span class="hljs-keyword">new</span> Ui::MainWindow)<br>&#123;<br>    ui-&gt;setupUi(<span class="hljs-keyword">this</span>);<br>	connect(ui-&gt;pushButton, &amp;QPushButton::clicked, [=]() &#123;<br>		ui-&gt;pushButton-&gt;setEnabled(<span class="hljs-literal">false</span>);<br><br>		doSomeThing2(); <span class="hljs-comment">//调用doSomeThing2()</span><br><br>		ui-&gt;pushButton-&gt;setText(<span class="hljs-string">u8&quot;开始&quot;</span>);<br>		ui-&gt;pushButton-&gt;setEnabled(<span class="hljs-literal">true</span>);<br>	&#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MainWindow::doSomeThing0</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10000</span>; i++)<br>	&#123;<br>		toDoOneThing(i);<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MainWindow::doSomeThing2</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">auto</span> <span class="hljs-built_in">future</span> = QtConcurrent::run(<span class="hljs-keyword">this</span>, &amp;MainWindow::doSomeThing0);<br><br>	<span class="hljs-keyword">while</span> (<span class="hljs-built_in">future</span>.isFinished() == <span class="hljs-literal">false</span>)<br>	&#123;<br>		QApplication::processEvents();<br>		QThread::msleep(<span class="hljs-number">20</span>);<br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>Concurrent是并发的意思，QtConcurrent是一个命名空间，提供了一些高级的 API，使得在编写多线程的时候，无需使用低级线程原语，如读写锁，等待条件或信号。使用QtConcurrent编写的程序会根据可用的处理器内核数自动调整使用的线程数。<a target="_blank" rel="noopener" href="https://blog.csdn.net/luoyayun361/article/details/80288610">Qt QtConcurrent之 Run 函数用法_luoyayun361的专栏-CSDN博客_qtconcurrent</a></p>
+<p><code>QtConcurrent::run</code>从第三个参数开始为所调用函数的参数。</p>
+<h2 id="小问题"><a href="#小问题" class="headerlink" title="小问题"></a>小问题</h2><p>以上代码执行时会出现点击关闭按钮无法退出的问题，解决方法如下：</p>
+<p><code>mainwindow.h</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">protected</span>:<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">closeEvent</span><span class="hljs-params">(QCloseEvent *event)</span></span>;<br><br><span class="hljs-keyword">private</span>:<br>	<span class="hljs-keyword">bool</span> isFinished_ = <span class="hljs-literal">false</span>;<br><br></code></pre></td></tr></table></figure>
+
+<p><code>mainwindow.cpp</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MainWindow::closeEvent</span><span class="hljs-params">(QCloseEvent * event)</span></span><br><span class="hljs-function"></span>&#123;<br>	isFinished_ = <span class="hljs-literal">true</span>;<br>	<span class="hljs-keyword">return</span> QMainWindow::closeEvent(event);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MainWindow::doSomeThing0</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10000</span>; i++)<br>	&#123;<br>		<span class="hljs-keyword">if</span> (isFinished_ == <span class="hljs-literal">true</span>)<br>			<span class="hljs-keyword">break</span>;<br>		toDoOneThing(i);<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MainWindow::doSomeThing1</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10000</span>; i++)<br>	&#123;<br>		<span class="hljs-keyword">if</span> (isFinished_ == <span class="hljs-literal">true</span>)<br>			<span class="hljs-keyword">break</span>;<br>		toDoOneThing(i);<br><br>		QApplication::processEvents();<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="示例代码路径"><a href="#示例代码路径" class="headerlink" title="示例代码路径"></a>示例代码路径</h2><p><a href="https://gitee.com/yuque/demo/tree/master/Backgrounder">Backgrounder · yuque/demo - 码云 - 开源中国 (gitee.com)</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/noob/categories/C/">C++</a>
+                    
+                      <a class="hover-with-bg" href="/noob/categories/C/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">编码规范</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/noob/tags/C/">C++</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/noob/2021/06/03/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%80%BC%E6%8D%95%E8%8E%B7%E7%9A%84%E4%B8%80%E7%82%B9%E5%B0%8F%E7%96%91%E9%97%AE/">
+                        <span class="hidden-mobile">lambda表达式值捕获的一点小疑问</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/noob/js/debouncer.js" ></script>
+<script  src="/noob/js/events.js" ></script>
+<script  src="/noob/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/noob/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/noob/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/noob/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?82365797a7f92a0aa6495822ee0829a4";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/noob/js/boot.js" ></script>
+
+
+
+</body>
+</html>

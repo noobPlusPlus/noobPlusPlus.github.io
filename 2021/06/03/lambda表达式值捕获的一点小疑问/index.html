@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="l">
   <meta name="keywords" content="">
-  <title>代码中的 if…else 杂谈 - noob</title>
+  <title>lambda表达式值捕获的一点小疑问 - noob</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -59,7 +59,7 @@
   </script>
   <script  src="/noob/js/utils.js" ></script>
   <script  src="/noob/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body>
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="代码中的 if…else 杂谈">
+            <span class="h2" id="subtitle" title="lambda表达式值捕获的一点小疑问">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-05-16 20:12" pubdate>
-        2021年5月16日 晚上
+      <time datetime="2021-06-03 20:24" pubdate>
+        2021年6月3日 晚上
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3 字
+      609 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      7
        分钟
     </span>
   
@@ -224,10 +224,55 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">代码中的 if…else 杂谈</h1>
+            <h1 style="display: none">lambda表达式值捕获的一点小疑问</h1>
             
             <div class="markdown-body">
-              <p>填坑中</p>
+              <blockquote>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>学习C++时，版本是<code>C++03</code>，公司也没有升级编译器，一直没有学习<code>C++11</code>，后来换工作后，新公司提倡使用<code>C++11</code>，特别推荐槽函数直接使用<code>lambda</code>如下所示写法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">connect(ui-&gt;pushButton, &amp;QPushButton::clicked, [=]() &#123;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>大佬推荐<code>[]</code>中，一般直接捕获<code>=</code>即可。</p>
+<p>后来大体了解了一下捕获：</p>
+<blockquote>
+<p><code>[&amp;]</code>（以引用隐式捕获被使用的自动变量）</p>
+<p><code>[=] </code>（以复制隐式捕获被使用的自动变量）。</p>
+<p><code>[=, &amp;i]</code>     // 以复制捕获，但 i 以引用捕获</p>
+</blockquote>
+<p>但是有点疑问：</p>
+<p><code>dialog.h</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dialog</span> :</span> <span class="hljs-keyword">public</span> QDialog<br>&#123;<br>    Q_OBJECT<br><br><span class="hljs-keyword">public</span>:<br>    Dialog(QWidget *parent = <span class="hljs-literal">nullptr</span>);<br>    ~Dialog();<br><br><span class="hljs-keyword">private</span>:<br>    Ui::Dialog *ui;<br>	<span class="hljs-keyword">int</span> clickedCount_ = <span class="hljs-number">0</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p><code>dialog.cpp</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++">Dialog::Dialog(QWidget *parent)<br>    : QDialog(parent)<br>    , ui(<span class="hljs-keyword">new</span> Ui::Dialog)<br>&#123;<br>    ui-&gt;setupUi(<span class="hljs-keyword">this</span>);<br>	clickedCount_;<br><br>	connect(ui-&gt;pushButton, &amp;QPushButton::clicked, [&amp;]() &#123;<br>		clickedCount_++;<br>		ui-&gt;label-&gt;setText(QString::number(clickedCount_));<br>	&#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以上代码实现在按钮点击时，显示点击次数</p>
+<p><img src="image-20210604203216486.png" srcset="/noob/img/loading.gif"></p>
+<p>我之前的想法是：由于<code>lambda</code>中以引用隐式自动捕获<code>clickedCount_</code>（<code>[&amp;]</code>），所以当点击按钮时，<code>clickedCount_++</code>能改变被捕获的<code>clickedCount_</code>值，如果换成以复制隐式捕获被使用的自动变量<code>[=]</code>，那么当点击按钮时，将一直显示0。</p>
+<p>测试一下：</p>
+<p><code>dialog.cpp</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++">Dialog::Dialog(QWidget *parent)<br>    : QDialog(parent)<br>    , ui(<span class="hljs-keyword">new</span> Ui::Dialog)<br>&#123;<br>    ui-&gt;setupUi(<span class="hljs-keyword">this</span>);<br>	clickedCount_;<br><br>	connect(ui-&gt;pushButton, &amp;QPushButton::clicked, [=]() &#123;<br>		clickedCount_++;<br>		ui-&gt;label-&gt;setText(QString::number(clickedCount_));<br>	&#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="image-20210604203801126.png" srcset="/noob/img/loading.gif"></p>
+<p>功能和按引用捕获完全一样，不讲武德啊。。。。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>查看文档得知：</p>
+<blockquote>
+<p>Lambda 捕获</p>
+<p><em>捕获</em> 是零或更多<em>捕获符</em>的逗号分隔列表，可选地以 <em>默认捕获符</em> 开始。仅有的默认捕获符是</p>
+<p><code>&amp;</code>（以引用隐式捕获被使用的自动变量）和</p>
+<p><code>= </code>（以复制隐式捕获被使用的自动变量）。</p>
+<p>当出现任一默认捕获符时，都能隐式捕获当前对象（<code>*this</code>）。当它被隐式捕获时，始终被以引用捕获，即使默认捕获符是 <code>=</code> 也是如此。</p>
+</blockquote>
+<p>原来是因为无论是<code>[=]</code>还是<code>[&amp;]</code>都会默认捕获<code>*this</code>的引用，所以上面的示例得到的结果是一样的。</p>
+<p>找到原因后，心中的疑团终于解决了，值还会捕获引用，总感觉有点怪怪的。</p>
+<p>继续向下看文档：</p>
+<blockquote>
+<p>当默认捕获符为 <code>=</code> 时，<code>*this</code> 的隐式捕获被弃用。 (C++20 起)</p>
+</blockquote>
+<p>那帮老头子们是不是也感觉<code>=</code>捕获引用不妥，<code>c++20</code>给取消了。</p>
+<p>感觉更不讲武德了。。。。</p>
 
             </div>
             <hr>
@@ -239,7 +284,7 @@
                     
                       <a class="hover-with-bg" href="/noob/categories/C/">C++</a>
                     
-                      <a class="hover-with-bg" href="/noob/categories/C/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">编码规范</a>
+                      <a class="hover-with-bg" href="/noob/categories/C/C-11/">C++11</a>
                     
                   </div>
                 
@@ -260,9 +305,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/noob/2021/05/18/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E4%B8%8EQt%E7%B1%BB%E5%8F%8D%E5%B0%84/">
+                      <a href="/noob/2021/08/06/Qt%E5%A4%84%E7%90%86%E8%80%97%E6%97%B6%E4%BB%BB%E5%8A%A1%EF%BC%8C%E9%98%B2%E6%AD%A2%E7%95%8C%E9%9D%A2%E5%81%87%E6%AD%BB%E7%9A%84%E4%B8%A4%E4%B8%AA%E7%AE%80%E5%8D%95%E5%86%99%E6%B3%95/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">简单工厂模式与Qt类反射</span>
+                        <span class="hidden-mobile">Qt处理耗时任务，防止界面假死的两个简单写法</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -270,8 +315,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/noob/2021/05/15/Qt%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%97%B6%E9%97%B4/">
-                        <span class="hidden-mobile">Qt字符串转时间</span>
+                      <a href="/noob/2021/06/02/%E7%95%AA%E8%8C%84%E5%B7%A5%E5%85%B7rename%E5%BC%95%E8%B5%B7%E7%9A%84bug-%E5%BB%BA%E8%AE%AE%E4%BD%BF%E7%94%A8%E6%96%B0%E5%BC%8FQt-connect-%E5%86%99%E6%B3%95/">
+                        <span class="hidden-mobile">番茄工具rename引起的bug - 建议使用新式Qt connect 写法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

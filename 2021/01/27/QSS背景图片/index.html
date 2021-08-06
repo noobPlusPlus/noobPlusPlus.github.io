@@ -59,7 +59,7 @@
   </script>
   <script  src="/noob/js/utils.js" ></script>
   <script  src="/noob/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.3.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body>
@@ -230,9 +230,10 @@
               <blockquote>
 <p>background-image 和 border-image的区别。</p>
 </blockquote>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="拉伸与重复"><a href="#拉伸与重复" class="headerlink" title="拉伸与重复"></a>拉伸与重复</h2><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xl">QFrame *frame = new QFrame;<br><span class="hljs-comment">//不会自动适应图片，background-image图片尺寸不变，</span><br><span class="hljs-comment">//会重复或空出一块区域，取决于 background-repeat属性的设置</span><br><span class="hljs-function"><span class="hljs-title">frame</span>-&gt;</span>setStyleSheet(<span class="hljs-string">&quot;background-image:url(:/image/test.jpg)&quot;</span>);<br><span class="hljs-comment">//图片可以自动居中显示，控件大小改变时会自动拉伸，但是设置边框属性无效</span><br><span class="hljs-function"><span class="hljs-title">frame</span>-&gt;</span>setStyleSheet(<span class="hljs-string">&quot;border-image:url(:/image/test.jpg)&quot;</span>);<br></code></pre></td></tr></table></figure>
+
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>border-image：<ul>
 <li>图片可以自动居中显示；</li>
