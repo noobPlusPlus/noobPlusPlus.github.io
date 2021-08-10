@@ -253,7 +253,7 @@
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>除非要兼容Qt4，否则尽量使用新式的<code>connect</code>写法。</li>
-<li>变量、函数命名尽量不要重复，个人感觉Qt开发变量名更推荐使用bytes_written`这种写法，以减少与Qt自带函数、变量重名的概率。</li>
+<li>变量、函数命名尽量不要重复，个人感觉Qt开发变量名更推荐使用<code>bytes_written</code>这种写法，以减少与Qt自带函数、变量重名的概率。</li>
 <li>能在编译器解决的问题，不要拖到运行期。比如：新式枚举<code>enum class</code>传参比直接传<code>int</code>、<code>QString</code>更容易在编译器发现问题。</li>
 </ol>
 
