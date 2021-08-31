@@ -231,7 +231,7 @@
 <p>unique_ptr、shared_ptr及其数组，通过lambda实现指定Deleter</p>
 </blockquote>
 <span id="more"></span>
-<hr>
+
 <h2 id="unique-ptr"><a href="#unique-ptr" class="headerlink" title="unique_ptr"></a>unique_ptr</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">unique_ptr</span>&lt;Test, <span class="hljs-built_in">std</span>::function&lt;<span class="hljs-keyword">void</span>(Test *)&gt;&gt; test(<span class="hljs-keyword">new</span> Test, [](Test* _pointer) &#123;<br>    <span class="hljs-comment">//其他操作</span><br>    <span class="hljs-keyword">delete</span> _pointer;<br>&#125;);<br><br></code></pre></td></tr></table></figure>
 
 <h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">unique_ptr</span>&lt;Test, <span class="hljs-built_in">std</span>::function&lt;<span class="hljs-keyword">void</span>(Test *)&gt;&gt;(<span class="hljs-keyword">new</span> Test[<span class="hljs-number">5</span>], <span class="hljs-built_in">std</span>::default_delete&lt;Test[]&gt;());<br></code></pre></td></tr></table></figure>
