@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      971 字
     </span>
   
 
@@ -246,10 +246,10 @@
 <p>又如：</p>
 <h3 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">if</span>(...)<br>&#123;<br>    ...<span class="hljs-comment">//重复一堆</span><br>    type = <span class="hljs-string">u8&quot;狗&quot;</span>;<br>    ...<span class="hljs-comment">//重复一堆</span><br>    legs = <span class="hljs-number">4</span>;<br>    run(type, legs);<br>    ...<span class="hljs-comment">//其他重复一堆</span><br>&#125;<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(...)<br>&#123;<br>    ...<span class="hljs-comment">//重复一堆</span><br>    type = <span class="hljs-string">u8&quot;海鸥&quot;</span>;<br>    ...<span class="hljs-comment">//重复一堆</span><br>    legs = <span class="hljs-number">2</span>;<br>    run(type, legs);<br>    ...<span class="hljs-comment">//其他重复一堆</span><br>&#125;<br><br>...<br>    <br><span class="hljs-keyword">else</span><br>&#123;<br>    ...<span class="hljs-comment">//重复一堆</span><br>    type = <span class="hljs-string">u8&quot;螃蟹&quot;</span>;<br>    ...<span class="hljs-comment">//重复一堆</span><br>    legs = <span class="hljs-number">8</span>;<br>    run(type, legs);<br>    ...<span class="hljs-comment">//其他重复一堆</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>曾经给大佬反应过他这种代码的问题，后来大佬把if-else换成了switch-case，我想是我没表述清楚要害。。。</p>
 <ol>
 <li>个人感觉这种链式的if-else可以接受；</li>
 <li>但是这种写法经常会伴随着大量的复制-粘贴，这就有“坏味道”了。</li>
+<li><code>switch-case</code>也有同样的问题。</li>
 </ol>
 <p>更有甚者：</p>
 <h3 id="问题3"><a href="#问题3" class="headerlink" title="问题3"></a>问题3</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">bool</span> b1; <span class="hljs-comment">//(就不初始化 (¬､¬))</span><br><span class="hljs-keyword">bool</span> b2;<br><span class="hljs-keyword">bool</span> b3;<br><span class="hljs-keyword">bool</span> b4;<br><span class="hljs-keyword">bool</span> b5;<br>... <span class="hljs-comment">//省略同一函数中1024条代码</span><br>b1 = <span class="hljs-literal">true</span>;<br>...<br>b2 = <span class="hljs-literal">false</span>;<br>b3 = <span class="hljs-literal">true</span>;<br>... <span class="hljs-comment">//省略同一函数中又1024条代码</span><br>b4 = <span class="hljs-literal">false</span>;<br>b5 = <span class="hljs-literal">true</span>;<br><br><span class="hljs-keyword">if</span>(b1 &amp;&amp; b2 || !b3 &amp;&amp; b4 || b5)<br>&#123;<br>    <br>&#125;<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!b1 || b2 &amp;&amp; !b3 &amp;&amp; b4 || b5)<br>&#123;<br>    <br>&#125;<br>...<span class="hljs-comment">//省略10086种情况</span><br><span class="hljs-keyword">else</span><br>&#123;<br>    <br>&#125;<br><br></code></pre></td></tr></table></figure>
@@ -258,7 +258,7 @@
 <ol>
 <li>标志位不初始化；</li>
 <li><code>RadioButton</code>的按下状态需要标志位记录；</li>
-<li><code>vector::size()</code>是否为0需要标志位记录；</li>
+<li><code>vector::empty()</code>是否为<code>true</code>需要标志位记录；</li>
 <li><code>ComboBox</code>是否选择第一行需要标志位记录；</li>
 <li>……</li>
 </ol>
