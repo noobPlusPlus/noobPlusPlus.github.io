@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="l">
   <meta name="keywords" content="">
-  <title>git常用命令 - noob</title>
+  <title>QListWidget - noob</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="git常用命令">
+            <span class="h2" id="subtitle" title="QListWidget">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-09-06 20:44" pubdate>
-        2021年9月6日 晚上
+      <time datetime="2021-10-28 18:23" pubdate>
+        2021年10月28日 晚上
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      89 字
+      351 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      5
        分钟
     </span>
   
@@ -224,21 +224,53 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">git常用命令</h1>
+            <h1 style="display: none">QListWidget</h1>
             
             <div class="markdown-body">
               <blockquote>
-<p>整理中</p>
+<p>QListWidget记录汇总。</p>
 </blockquote>
 <span id="more"></span>
 
-<h2 id="修改-gitignore-文件，如何重新生效"><a href="#修改-gitignore-文件，如何重新生效" class="headerlink" title="修改 .gitignore 文件，如何重新生效"></a>修改 .gitignore 文件，如何重新生效</h2><blockquote>
-<p>.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的;</p>
-</blockquote>
-<p><strong>命令</strong></p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">git rm -r <span class="hljs-comment">--cached .</span><br>git <span class="hljs-keyword">add</span> .<br>git <span class="hljs-keyword">commit</span> -m <span class="hljs-string">&#x27;update .gitignore&#x27;</span><br></code></pre></td></tr></table></figure>
+<h2 id="1-QListWidget-itemChanged-QListWidgetItem-item"><a href="#1-QListWidget-itemChanged-QListWidgetItem-item" class="headerlink" title="1. QListWidget::itemChanged(QListWidgetItem * _item)"></a>1. QListWidget::itemChanged(QListWidgetItem * _item)</h2><ol>
+<li><p>当允许编辑时，编辑后失去焦点可触发该信号，假设槽函数为<code>onItemChanged</code>，如果此时选中其他行，此时的<code>currentRow()</code>不是被编辑的<code>row</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Test::onItemChanged</span><span class="hljs-params">(QListWidgetItem * _item)</span> <span class="hljs-comment">//</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> row = listWidget-&gt;currentRow();<span class="hljs-comment">//错</span><br>    <span class="hljs-keyword">auto</span> row2 = listWidget-&gt;row(_item);<span class="hljs-comment">//对</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bymingliang/p/12273742.html">修改 .gitignore 文件，如何重新生效 - 一叶千秋 - 博客园 (cnblogs.com)</a></p>
+</li>
+</ol>
+<h2 id="2-增加行"><a href="#2-增加行" class="headerlink" title="2. 增加行"></a>2. 增加行</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> listWidgetItem = <span class="hljs-keyword">new</span> QListWidgetItem(<span class="hljs-string">&quot;test&quot;</span>, listWidget);<br></code></pre></td></tr></table></figure>
+
+<p>可编辑、可选中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">listWidgetItem-&gt;setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);<br></code></pre></td></tr></table></figure>
+
+<p>增加一行会触发<code>QListWidget::itemChanged(QListWidgetItem * _item)</code>信号，不想触发可以关闭</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++">disconnect(listWidget, &amp;QListWidget::itemChanged, <span class="hljs-keyword">this</span>, &amp;Test::onItemChanged);<br><span class="hljs-keyword">auto</span> listWidgetItem = <span class="hljs-keyword">new</span> QListWidgetItem(<span class="hljs-string">&quot;test&quot;</span>, listWidget);<br>listWidgetItem-&gt;setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);<br>connect(listWidget, &amp;QListWidget::itemChanged, <span class="hljs-keyword">this</span>, &amp;Test::onItemChanged);<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-删除行"><a href="#3-删除行" class="headerlink" title="3. 删除行"></a>3. 删除行</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> item = listWidget-&gt;takeItem(index);<br><span class="hljs-keyword">delete</span> item;<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-去掉item选中的虚线框"><a href="#4-去掉item选中的虚线框" class="headerlink" title="4. 去掉item选中的虚线框"></a>4. 去掉item选中的虚线框</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">listWidget-&gt;setFocusPolicy(Qt::NoFocus);<br></code></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">QListWidget</span>&#123;<br>    <span class="hljs-attribute">outline</span>:<span class="hljs-number">0px</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-item颜色交替"><a href="#5-item颜色交替" class="headerlink" title="5. item颜色交替"></a>5. item颜色交替</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">listWidget-&gt;setAlternatingRowColors(<span class="hljs-literal">true</span>);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">QListWidget</span> &#123;<br>	<span class="hljs-attribute">background</span>:gray;<br>    <span class="hljs-attribute">alternate-background-color</span>: black;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="image-20211028133540429.png" srcset="/noob/img/loading.gif"></p>
+<p>算上背景色有两种颜色</p>
+<p>或</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">QListWidget</span> &#123;<br>	<span class="hljs-attribute">background</span>:gray;<br>&#125;<br><br><span class="hljs-selector-tag">QListWidget</span><span class="hljs-selector-pseudo">::item</span><span class="hljs-selector-pseudo">:alternate</span> <span class="hljs-comment">/*偶数行*/</span><br>&#123;<br>	<span class="hljs-attribute">background</span>:pink;<br>&#125;<br><br><span class="hljs-selector-tag">QListWidget</span><span class="hljs-selector-pseudo">::item</span>:!<span class="hljs-selector-tag">alternate</span> <span class="hljs-comment">/*奇数行*/</span><br>&#123;<br>	<span class="hljs-attribute">background</span>:black;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="image-20211028134455905.png" srcset="/noob/img/loading.gif"></p>
+<p>算上背景色有三种颜色</p>
+<h2 id="6-编辑框"><a href="#6-编辑框" class="headerlink" title="6. 编辑框"></a>6. 编辑框</h2><p>同QLineEdit</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">QListWidget</span> <span class="hljs-selector-tag">QLineEdit</span><br>&#123;<br>    <span class="hljs-attribute">background</span>: gray;<br>	<span class="hljs-attribute">color</span>:white;<br>	<span class="hljs-attribute">border</span>:none;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="7-部分样式"><a href="#7-部分样式" class="headerlink" title="7. 部分样式"></a>7. 部分样式</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">QListWidget</span> &#123;<br>	<span class="hljs-attribute">border</span>: none;<br>	<span class="hljs-attribute">background</span>:gray;<br>    <span class="hljs-comment">/*alternate-background-color: black;*/</span><br>	<span class="hljs-attribute">color</span>: green;<br>&#125;<br><br><span class="hljs-selector-tag">QListWidget</span>&#123;<br>    <span class="hljs-attribute">outline</span>:<span class="hljs-number">0px</span>;<br>&#125;<br><br><span class="hljs-selector-tag">QListWidget</span> <span class="hljs-selector-tag">QLineEdit</span><br>&#123;<br>    <span class="hljs-attribute">background</span>: gray;<br>	<span class="hljs-attribute">color</span>:white;<br>	<span class="hljs-attribute">border</span>:none;<br>&#125;<br><br><span class="hljs-selector-tag">QListWidget</span><span class="hljs-selector-pseudo">::item</span><span class="hljs-selector-pseudo">:alternate</span><br>&#123;<br>	<span class="hljs-attribute">background</span>:pink;<br>&#125;<br><br><span class="hljs-selector-tag">QListWidget</span><span class="hljs-selector-pseudo">::item</span>:!<span class="hljs-selector-tag">alternate</span><br>&#123;<br>	<span class="hljs-attribute">background</span>:black;<br>&#125;<br><br><span class="hljs-selector-tag">QListWidget</span><span class="hljs-selector-pseudo">::item</span>&#123;<br>	<span class="hljs-attribute">color</span>: yellow;<br>	<span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">1px</span> solid blue;<br>&#125;<br><br><span class="hljs-selector-tag">QListWidget</span><span class="hljs-selector-pseudo">::item</span><span class="hljs-selector-pseudo">:hover</span> &#123;<br>    <span class="hljs-attribute">background</span>: red;<br>	<span class="hljs-attribute">color</span>: white;<br>&#125;<br><br><span class="hljs-selector-tag">QListWidget</span><span class="hljs-selector-pseudo">::item</span><span class="hljs-selector-pseudo">:selected</span> &#123;<br>    <span class="hljs-attribute">background</span>: red;<br>	<span class="hljs-attribute">color</span>:white;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<p><img src="image-20211028135145129.png" srcset="/noob/img/loading.gif"></p>
 
             </div>
             <hr>
@@ -248,9 +280,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/noob/categories/%E5%85%B6%E4%BB%96/">其他</a>
+                      <a class="hover-with-bg" href="/noob/categories/Qt/">Qt</a>
                     
-                      <a class="hover-with-bg" href="/noob/categories/%E5%85%B6%E4%BB%96/git/">git</a>
+                      <a class="hover-with-bg" href="/noob/categories/Qt/QWidget/">QWidget</a>
                     
                   </div>
                 
@@ -258,7 +290,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/noob/tags/git/">git</a>
+                      <a class="hover-with-bg" href="/noob/tags/QWidget/">QWidget</a>
                     
                   </div>
                 
@@ -271,9 +303,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/noob/2021/09/10/%E9%98%B2%E6%AD%A2%E5%90%8C%E4%B8%80%E4%BF%A1%E5%8F%B7%E5%A4%9A%E6%AC%A1%E8%A7%A6%E5%8F%91-%E4%BD%BF%E7%94%A8QObject-disconnect-%E5%87%BD%E6%95%B0/">
+                      <a href="/noob/2021/10/29/PyQt5-%E5%8A%A0%E8%BD%BDUI%E6%96%87%E4%BB%B6/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">防止同一信号多次触发-使用QObject::disconnect()函数</span>
+                        <span class="hidden-mobile">PyQt5 加载UI文件</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -281,8 +313,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/noob/2021/09/01/%E5%AE%B9%E5%99%A8%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%88%E5%A4%87%E4%BB%BDcsdn%E5%8D%9A%E5%AE%A2%EF%BC%8C%E9%98%B2%E6%AD%A2%E5%88%A0%E9%99%A4%EF%BC%89/">
-                        <span class="hidden-mobile">容器删除元素的方法（备份csdn博客，防止删除）</span>
+                      <a href="/noob/2021/09/10/%E9%98%B2%E6%AD%A2%E5%90%8C%E4%B8%80%E4%BF%A1%E5%8F%B7%E5%A4%9A%E6%AC%A1%E8%A7%A6%E5%8F%91-%E4%BD%BF%E7%94%A8QObject-disconnect-%E5%87%BD%E6%95%B0/">
+                        <span class="hidden-mobile">防止同一信号多次触发-使用QObject::disconnect()函数</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
