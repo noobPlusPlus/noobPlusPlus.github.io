@@ -236,7 +236,7 @@
 <p>.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的;</p>
 </blockquote>
 <p><strong>命令</strong></p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">git rm -r <span class="hljs-comment">--cached .</span><br>git <span class="hljs-keyword">add</span> .<br>git <span class="hljs-keyword">commit</span> -m <span class="hljs-string">&#x27;update .gitignore&#x27;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">git rm -r <span class="hljs-comment">--cached .</span><br>git <span class="hljs-keyword">add</span> .<br>git <span class="hljs-keyword">commit</span> -m &quot;update .gitignore&quot;<br></code></pre></td></tr></table></figure>
 
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bymingliang/p/12273742.html">修改 .gitignore 文件，如何重新生效 - 一叶千秋 - 博客园 (cnblogs.com)</a></p>
 
