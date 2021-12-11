@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      249 字
+      253 字
     </span>
   
 
@@ -239,30 +239,16 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># This Python file uses the following encoding: utf-8</span><br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">from</span> PySide2.QtWidgets <span class="hljs-keyword">import</span> QApplication, QWidget<br><span class="hljs-keyword">from</span> PySide2.QtCore <span class="hljs-keyword">import</span> QFile<br><span class="hljs-keyword">from</span> PySide2.QtUiTools <span class="hljs-keyword">import</span> QUiLoader<br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UITest</span>(<span class="hljs-params">QWidget</span>):</span><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span><br>        <span class="hljs-built_in">super</span>(UITest, self).__init__()<br>        self.load_ui()<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_ui</span>(<span class="hljs-params">self</span>):</span><br>        loader = QUiLoader()<br>        path = os.fspath(Path(__file__).resolve().parent / <span class="hljs-string">&quot;form.ui&quot;</span>)<br>        ui_file = QFile(path)<br>        ui_file.<span class="hljs-built_in">open</span>(QFile.ReadOnly)<br>        loader.load(ui_file, self)<br>        ui_file.close()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    app = QApplication([])<br>    widget = UITest()<br>    widget.show()<br>    sys.exit(app.exec_())<br></code></pre></td></tr></table></figure>
 
 <h2 id="PyQt5直接加载UI文件"><a href="#PyQt5直接加载UI文件" class="headerlink" title="PyQt5直接加载UI文件"></a>PyQt5直接加载UI文件</h2><p>仿造上述代码</p>
-<pre><code class="python"># This Python file uses the following encoding: utf-8
-import sys
-
-from PyQt5.QtWidgets import QApplication, QWidget
-from PyQt5.uic import loadUi
-
-class UITest(QWidget):
-    def __init__(self, parent=None):
-        super().__init__()
-        loadUi(&#39;form.ui&#39;, self)
-        self.setFixedSize(600, 400)
-        self.pushButton.clicked.connect(self.onButtonClicked)#可直接self.pushButton,该QPushButton变量在UI中定义
-
-    def onButtonClicked(self):
-        x = random.randint(self.pushButton.width(), self.width() - self.pushButton.width())
-        y = random.randint(self.pushButton.height(), self.height() - self.pushButton.height())
-        self.pushButton.move(x, y)
-
-
-if __name__ == &quot;__main__&quot;:
-    app = QApplication([])
-    widget = UITest()
-    widget.show()
-    sys.exit(app.exec_())</code></pre>
+<p>```python</p>
+<h1 id="This-Python-file-uses-the-following-encoding-utf-8"><a href="#This-Python-file-uses-the-following-encoding-utf-8" class="headerlink" title="This Python file uses the following encoding: utf-8"></a>This Python file uses the following encoding: utf-8</h1><p>import sys</p>
+<p>from PyQt5.QtWidgets import QApplication, QWidget<br>from PyQt5.uic import loadUi</p>
+<p>class UITest(QWidget):<br>    def <strong>init</strong>(self, parent=None):<br>        super().<strong>init</strong>()<br>        loadUi(‘form.ui’, self)<br>        self.setFixedSize(600, 400)<br>        self.pushButton.clicked.connect(self.onButtonClicked)#可直接self.pushButton,该QPushButton变量在UI中定义</p>
+<pre><code>def onButtonClicked(self):
+    x = random.randint(self.pushButton.width(), self.width() - self.pushButton.width())
+    y = random.randint(self.pushButton.height(), self.height() - self.pushButton.height())
+    self.pushButton.move(x, y)</code></pre>
+<p>if <strong>name</strong> == “<strong>main</strong>“:<br>    app = QApplication([])<br>    widget = UITest()<br>    widget.show()<br>    sys.exit(app.exec_())</p>
+<h2 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h2><p>参见项目示例<br><a target="_blank" rel="noopener" href="https://github.com/noobPlusPlus/PyQtWidgetToyBox/tree/master/Welcome">github</a><br><a href="https://gitee.com/yuque/PyQtWidgetToyBox/tree/master/Welcome">gitee</a></p>
 
             </div>
             <hr>

@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="l">
   <meta name="keywords" content="">
-  <title>git常用命令 - noob</title>
+  <title>python 反射实现简单工厂 - noob</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="git常用命令">
+            <span class="h2" id="subtitle" title="python 反射实现简单工厂">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-09-06 20:44" pubdate>
-        2021年9月6日 晚上
+      <time datetime="2021-12-15 19:37" pubdate>
+        2021年12月15日 晚上
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      99 字
+      328 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      4
        分钟
     </span>
   
@@ -224,22 +224,23 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">git常用命令</h1>
+            <h1 style="display: none">python 反射实现简单工厂</h1>
             
             <div class="markdown-body">
               <blockquote>
-<p>整理中</p>
+<p>python反射、简单工厂模式<br>参见项目示例<br><a target="_blank" rel="noopener" href="https://github.com/noobPlusPlus/PyQtWidgetToyBox/blob/master/TabPane/TabPane.py">github</a><br><a href="https://gitee.com/yuque/PyQtWidgetToyBox/blob/master/TabPane/TabPane.py">gitee</a></p>
 </blockquote>
 <span id="more"></span>
+<p>在<a target="_blank" rel="noopener" href="https://yuque.gitee.io/noob/2021/05/18/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E4%B8%8EQt%E7%B1%BB%E5%8F%8D%E5%B0%842/">简单工厂模式与Qt类反射2</a>/<a target="_blank" rel="noopener" href="https://noobplusplus.github.io/2021/05/18/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E4%B8%8EQt%E7%B1%BB%E5%8F%8D%E5%B0%842/">简单工厂模式与Qt类反射2</a>中介绍了简单工厂模式介绍、实现、优缺点以及借助Qt反射实现简单工厂模式，实现方式相当繁琐。<br>对于python这种自带反射的语言，简单工厂实现起来就相当简单了。</p>
+<h2 id="传统简单工厂"><a href="#传统简单工厂" class="headerlink" title="传统简单工厂"></a>传统简单工厂</h2><p>传统方式实现简单工厂通常如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-keyword">from</span> Welcome.Welcome <span class="hljs-keyword">import</span> Welcome<br><span class="hljs-keyword">from</span> Covid19Charts.Covid19Charts <span class="hljs-keyword">import</span> Covid19Charts<br><span class="hljs-keyword">from</span> Covid19Map.Covid19Map <span class="hljs-keyword">import</span> Covid19Map<br><span class="hljs-comment"># 注意1</span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TabPane</span>(<span class="hljs-params">QFrame</span>):</span><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, buttonNameTuple, parent=<span class="hljs-literal">None</span></span>):</span><br>        <span class="hljs-comment"># todo</span><br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__pageFactory</span>(<span class="hljs-params">self, name</span>):</span> <span class="hljs-comment"># 注意2，此处name换成枚举更好</span><br>       <span class="hljs-keyword">if</span> name == <span class="hljs-string">&#x27;Welcome&#x27;</span>:<br>           <span class="hljs-keyword">return</span> Welcome(self)<br>       <span class="hljs-keyword">elif</span> name == <span class="hljs-string">&#x27;Covid19Charts&#x27;</span>:<br>           <span class="hljs-keyword">return</span> Covid19Charts(self)<br>       <span class="hljs-keyword">elif</span> name == <span class="hljs-string">&#x27;Covid19Map&#x27;</span>:<br>           <span class="hljs-keyword">return</span> Covid19Map(self)<br>       <span class="hljs-keyword">elif</span> name == <span class="hljs-string">&#x27;Covid19GeneralView&#x27;</span>:<br>           <span class="hljs-keyword">return</span> Covid19GeneralView(self)<br><br></code></pre></td></tr></table></figure>
 
-<h2 id="修改-gitignore-文件，如何重新生效"><a href="#修改-gitignore-文件，如何重新生效" class="headerlink" title="修改 .gitignore 文件，如何重新生效"></a>修改 .gitignore 文件，如何重新生效</h2><blockquote>
-<p>.gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的;</p>
-</blockquote>
-<p><strong>命令</strong></p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">git rm -r <span class="hljs-comment">--cached .</span><br>git <span class="hljs-keyword">add</span> .<br>git <span class="hljs-keyword">commit</span> -m &quot;update .gitignore&quot;<br></code></pre></td></tr></table></figure>
+<p>通常的做法是<code>import</code>一堆，然后根据不同的情况，<code>new</code>出不同的实例。<br>如<a target="_blank" rel="noopener" href="https://yuque.gitee.io/noob/2021/05/29/%E4%BB%A3%E7%A0%81%E4%B8%AD%E7%9A%84if%E2%80%A6else%E6%9D%82%E8%B0%881/">代码中的if…else杂谈1</a>/<a target="_blank" rel="noopener" href="https://noobplusplus.github.io/2021/05/29/%E4%BB%A3%E7%A0%81%E4%B8%AD%E7%9A%84if%E2%80%A6else%E6%9D%82%E8%B0%881/">代码中的if…else杂谈1</a>中所说这种写法不符合面向对象的<code>开闭原则</code>。</p>
+<h2 id="反射实现简单工厂"><a href="#反射实现简单工厂" class="headerlink" title="反射实现简单工厂"></a>反射实现简单工厂</h2><p>python 反射实现简单工厂相当简单：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TabPane</span>(<span class="hljs-params">QFrame</span>):</span><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, buttonNameTuple, parent=<span class="hljs-literal">None</span></span>):</span><br>        <span class="hljs-comment"># todo</span><br><br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__pageFactory</span>(<span class="hljs-params">self, name</span>):</span><br>        <span class="hljs-comment"># import</span><br>        page = <span class="hljs-built_in">__import__</span>(name + <span class="hljs-string">&quot;.&quot;</span> + name, fromlist=[name])<br>        <span class="hljs-comment"># 实例化，获取方法</span><br>        pageClass = <span class="hljs-built_in">getattr</span>(page, name)<br>        <span class="hljs-keyword">return</span> pageClass(self)<br><br></code></pre></td></tr></table></figure>
 
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bymingliang/p/12273742.html">修改 .gitignore 文件，如何重新生效 - 一叶千秋 - 博客园 (cnblogs.com)</a></p>
-<h2 id="修改remote地址"><a href="#修改remote地址" class="headerlink" title="修改remote地址"></a>修改remote地址</h2><figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dsconfig"><span class="hljs-string">git</span> <span class="hljs-string">remote</span> <span class="hljs-built_in">set-url</span> <span class="hljs-string">origin</span> <span class="hljs-string">XXX</span><br></code></pre></td></tr></table></figure>
+<p>来自<code>C++</code>程序员的羡慕。。。</p>
+
             </div>
             <hr>
             <div>
@@ -248,9 +249,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/noob/categories/%E5%85%B6%E4%BB%96/">其他</a>
+                      <a class="hover-with-bg" href="/noob/categories/python/">python</a>
                     
-                      <a class="hover-with-bg" href="/noob/categories/%E5%85%B6%E4%BB%96/git/">git</a>
+                      <a class="hover-with-bg" href="/noob/categories/python/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
                     
                   </div>
                 
@@ -258,7 +259,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/noob/tags/git/">git</a>
+                      <a class="hover-with-bg" href="/noob/tags/python/">python</a>
+                    
+                      <a class="hover-with-bg" href="/noob/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
                     
                   </div>
                 
@@ -271,9 +274,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/noob/2021/09/10/%E9%98%B2%E6%AD%A2%E5%90%8C%E4%B8%80%E4%BF%A1%E5%8F%B7%E5%A4%9A%E6%AC%A1%E8%A7%A6%E5%8F%91-%E4%BD%BF%E7%94%A8QObject-disconnect-%E5%87%BD%E6%95%B0/">
+                      <a href="/noob/2021/12/18/python%E9%AA%9A%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">防止同一信号多次触发-使用QObject::disconnect()函数</span>
+                        <span class="hidden-mobile">python骚操作记录</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -281,8 +284,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/noob/2021/09/01/%E5%AE%B9%E5%99%A8%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%88%E5%A4%87%E4%BB%BDcsdn%E5%8D%9A%E5%AE%A2%EF%BC%8C%E9%98%B2%E6%AD%A2%E5%88%A0%E9%99%A4%EF%BC%89/">
-                        <span class="hidden-mobile">容器删除元素的方法（备份csdn博客，防止删除）</span>
+                      <a href="/noob/2021/12/11/QML-WebEngineView-%E5%92%8C-js-%E4%BA%A4%E4%BA%92/">
+                        <span class="hidden-mobile">QML WebEngineView 和 js 交互</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

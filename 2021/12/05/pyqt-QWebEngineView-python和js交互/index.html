@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      746 字
+      751 字
     </span>
   
 
@@ -229,9 +229,10 @@
             <div class="markdown-body">
               <blockquote>
 <p>PyQt下QWebEngine，QWebChannel简单使用。</p>
-</blockquote>
 <span id="more"></span>
 <p>PyQt下使用QWebEngine，QWebChannel整体流程与C++版类似</p>
+<p>参见项目<br><a target="_blank" rel="noopener" href="https://github.com/noobPlusPlus/PyQtWidgetToyBox/blob/master/Covid19Map/Covid19Map.py">github</a><br><a href="https://gitee.com/yuque/PyQtWidgetToyBox/blob/master/Covid19Map/Covid19Map.py">gitee</a></p>
+</blockquote>
 <h2 id="0-QWebEngineView"><a href="#0-QWebEngineView" class="headerlink" title="0. QWebEngineView"></a>0. QWebEngineView</h2><p>直接加载网页，无交互</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-keyword">from</span> PyQt5.QtWidgets <span class="hljs-keyword">import</span> QFrame, QVBoxLayout<br><span class="hljs-keyword">from</span> PyQt5.QtWebEngineWidgets <span class="hljs-keyword">import</span> QWebEngineView<br><span class="hljs-keyword">from</span> PyQt5.QtCore <span class="hljs-keyword">import</span> QUrl<br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Covid19Charts</span>(<span class="hljs-params">QFrame</span>):</span><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, parent=<span class="hljs-literal">None</span></span>):</span><br>        <span class="hljs-built_in">super</span>().__init__(parent)<br><br>        webView = QWebEngineView(self)<br>        webView.load(QUrl.fromLocalFile(<span class="hljs-string">&quot;/Covid19Charts/charts.html&quot;</span>))<br>        webView.show()<br><br>        layout = QVBoxLayout()<br>        layout.setContentsMargins(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)<br>        layout.addWidget(webView)<br>        self.setLayout(layout)<br><br></code></pre></td></tr></table></figure>
 
