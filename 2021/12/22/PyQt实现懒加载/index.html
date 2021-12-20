@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="l">
   <meta name="keywords" content="">
-  <title>防止同一信号多次触发-使用QObject::disconnect()函数 - noob</title>
+  <title>PyQt实现懒加载 - noob</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="防止同一信号多次触发-使用QObject::disconnect()函数">
+            <span class="h2" id="subtitle" title="PyQt实现懒加载">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-09-10 20:12" pubdate>
-        2021年9月10日 晚上
+      <time datetime="2021-12-22 21:21" pubdate>
+        2021年12月22日 晚上
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      0 字
+      395 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      5
        分钟
     </span>
   
@@ -224,15 +224,51 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">防止同一信号多次触发-使用QObject::disconnect()函数</h1>
+            <h1 style="display: none">PyQt实现懒加载</h1>
             
             <div class="markdown-body">
-              
+              <blockquote>
+<p> PyQt通过 QStackedLayout/Dict 实现懒加载<br>参见项目示例<br><a target="_blank" rel="noopener" href="https://github.com/noobPlusPlus/PyQtWidgetToyBox/blob/master/LazyTabPane/LazyTabPane.py">github</a><br><a href="https://gitee.com/yuque/PyQtWidgetToyBox/blob/master/LazyTabPane/LazyTabPane.py">gitee</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>为了学习PyQt，新建了个练手项目，每一个小主题一个tab页。<br>部分页面初始化时，需要Http请求、绘制图表，耗时较长。随着页面的增多，加载越来越慢。<br><img src="20211222204945.jpg" srcset="/noob/img/loading.gif"></p>
+<h2 id="原实现方式"><a href="#原实现方式" class="headerlink" title="原实现方式"></a>原实现方式</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TabPane</span>(<span class="hljs-params">QFrame</span>):</span><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, buttonNameTuple, parent=<span class="hljs-literal">None</span></span>):</span><br>        <span class="hljs-built_in">super</span>().__init__(parent)<br>        self.mainStackedLayout = QStackedLayout(self)<br>        self.mainStackedLayout.setContentsMargins(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(buttonNameTuple)):<br>            page = self.__pageFactory(buttonNameTuple[i][<span class="hljs-number">1</span>]) <span class="hljs-comment">#注意1</span><br>            self.mainStackedLayout.addWidget(page) <span class="hljs-comment">#注意2</span><br><br>        self.setLayout(self.mainStackedLayout)<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setCurrentIndex</span>(<span class="hljs-params">self, index</span>):</span><br>        self.mainStackedLayout.setCurrentIndex(index)<br><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>通过工厂函数<code>__pageFactory()</code>产生页面示例，详见<a target="_blank" rel="noopener" href="https://yuque.gitee.io/noob/2021/12/15/python-%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82/">python 反射实现简单工厂</a>/<a target="_blank" rel="noopener" href="https://noobplusplus.github.io/2021/12/15/python-%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82/">python 反射实现简单工厂</a></li>
+<li>初始化时，将每个页面都构建并添加到QStackedLayout中。随着页面的增多，加载越来越慢。</li>
+</ol>
+<p>之前写WPF时，用到过一个叫做懒加载<code>Lazy&lt;T&gt;</code>的东西，受其启发，自己写了个<code>LazyTabPane</code>。</p>
+<h2 id="懒加载-LazyTabPane"><a href="#懒加载-LazyTabPane" class="headerlink" title="懒加载(LazyTabPane)"></a>懒加载(LazyTabPane)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LazyTabPane</span>(<span class="hljs-params">QFrame</span>):</span><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, firstPageName, parent=<span class="hljs-literal">None</span></span>):</span><br>        <span class="hljs-built_in">super</span>().__init__(parent)<br>        self.__mainStackedLayout = QStackedLayout(self)<br>        self.__mainStackedLayout.setContentsMargins(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)<br>        self.__pageDict = &#123;&#125;<br>        self.__addWidget(firstPageName)  <br>        self.setLayout(self.__mainStackedLayout)<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setCurrentPage</span>(<span class="hljs-params">self, pageName</span>):</span><br>        pageIndex = self.__pageDict.get(pageName, -<span class="hljs-number">1</span>)<br>        <span class="hljs-keyword">if</span> pageIndex == -<span class="hljs-number">1</span>:<br>            self.__addWidget(pageName)<br>            pageIndex = self.__pageDict.get(pageName)<br><br>        self.__mainStackedLayout.setCurrentIndex(pageIndex)<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__addWidget</span>(<span class="hljs-params">self, pageName</span>):</span><br>        page = self.__pageFactory(pageName)<br>        self.__pageDict[pageName] = self.__mainStackedLayout.count()<br>        self.__mainStackedLayout.addWidget(page)   <br><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>只初始化第一个页面</li>
+<li>当调用<code>setCurrentPage()</code>切换其他页面时，判断<code>__pageDict</code>中是否已存有盖页面，如果没有则通过工厂函数创建该页面。然后求出该页面的索引并切换到该页。</li>
+<li><code>__pageDict</code>中所存的索引和界面上的顺序不同。</li>
+</ol>
+
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/noob/categories/PyQt/">PyQt</a>
+                    
+                      <a class="hover-with-bg" href="/noob/categories/PyQt/QWidget/">QWidget</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/noob/tags/QWidget/">QWidget</a>
+                    
+                  </div>
                 
               </div>
               
@@ -243,9 +279,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/noob/2021/10/28/QListWidget/">
+                      <a href="/noob/2021/12/25/Deepin20-3%E5%AE%89%E8%A3%85Qt%E5%90%8EQtCreator%E5%90%8E%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">QListWidget</span>
+                        <span class="hidden-mobile">Deepin20.3安装Qt后Qt Creator后打不开的问题</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -253,8 +289,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/noob/2021/09/06/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-                        <span class="hidden-mobile">git常用命令</span>
+                      <a href="/noob/2021/12/18/python%E9%AA%9A%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/">
+                        <span class="hidden-mobile">python骚操作记录</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
