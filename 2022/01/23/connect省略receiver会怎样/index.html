@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      0 字
+      605 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      9
        分钟
     </span>
   
@@ -227,12 +227,75 @@
             <h1 style="display: none">connect省略receiver会怎样</h1>
             
             <div class="markdown-body">
-              
+              <blockquote>
+<p><code>QObject::disconnect()</code>函数使用,以及个人发现的小问题</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p><img src="image1.png" srcset="/noob/img/loading.gif" alt="image1"></p>
+<p>有两个对话框<code>MainWindow</code>和<code>测试</code>，当点击<code>MainWindow</code>中的<code>测试</code>按钮时，<code>测试</code>窗口长宽变为400px，并弹出提示窗，如下所示：</p>
+<p><img src="image2.png" srcset="/noob/img/loading.gif" alt="image2"></p>
+<p>当点击<code>销毁窗口</code>时，销毁<code>测试</code>窗口。</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c++">MainWindow::MainWindow(QWidget *parent)<br>    : QMainWindow(parent)<br>    , ui(<span class="hljs-keyword">new</span> Ui::MainWindow)<br>&#123;<br>    ui-&gt;setupUi(<span class="hljs-keyword">this</span>);<br>    dialog_ = <span class="hljs-keyword">new</span> Dialog(<span class="hljs-keyword">this</span>);<br>    dialog_-&gt;setWindowTitle(<span class="hljs-string">u8&quot;测试窗口&quot;</span>);<br>    dialog_-&gt;setFixedSize(<span class="hljs-number">200</span>, <span class="hljs-number">200</span>);<br>    dialog_-&gt;show();<br><br>    connect(ui-&gt;pushButton_2, &amp;QPushButton::clicked, [=]() &#123;<br>        dialog_-&gt;deleteLater();<br>        &#125;);<br><br>    connect(ui-&gt;pushButton, &amp;QPushButton::clicked,<br>        <span class="hljs-keyword">this</span>, &amp;MainWindow::senderButtonClicked);<br>   <br>&#125;<br><br>MainWindow::~MainWindow()<br>&#123;<br>    <span class="hljs-keyword">delete</span> ui;<br>&#125;<br><br>Dialog::Dialog(QWidget* parent)<br>    : QDialog(parent)<br>&#123;<br>    connect(<span class="hljs-keyword">static_cast</span>&lt;MainWindow*&gt;(parentWidget()), &amp;MainWindow::senderButtonClicked, [=]() &#123;<br>        <span class="hljs-keyword">this</span>-&gt;setFixedSize(<span class="hljs-number">400</span>, <span class="hljs-number">400</span>);<br>        QMessageBox::information(<span class="hljs-literal">nullptr</span>, <span class="hljs-string">u8&quot;通知&quot;</span>, <span class="hljs-string">u8&quot;信号已相应&quot;</span>);<br>        &#125;);<br>        <br>    <span class="hljs-comment">//connect(static_cast&lt;MainWindow*&gt;(parentWidget()), &amp;MainWindow::senderButtonClicked, this, [=]() &#123;</span><br>    <span class="hljs-comment">//    //只多了第三个参数，this</span><br>    <span class="hljs-comment">//    this-&gt;setFixedSize(400, 400);</span><br>    <span class="hljs-comment">//    QMessageBox::information(nullptr, u8&quot;通知&quot;, u8&quot;信号已相应&quot;);</span><br>    <span class="hljs-comment">//    &#125;);</span><br>&#125;<br><br>Dialog::~Dialog()<br>&#123;<br>   <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果先点销毁，再点击测试，程序崩溃在<code>this-&gt;setFixedSize(400, 400);</code>行。</p>
+<p>将代码改为如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++">Dialog::Dialog(QWidget* parent)<br>    : QDialog(parent)<br>&#123;<br>    connect(<span class="hljs-keyword">static_cast</span>&lt;MainWindow*&gt;(parentWidget()), &amp;MainWindow::senderButtonClicked, <span class="hljs-keyword">this</span>, [=]() &#123;<br>        <span class="hljs-comment">//只多了第三个参数，this</span><br>        <span class="hljs-keyword">this</span>-&gt;setFixedSize(<span class="hljs-number">400</span>, <span class="hljs-number">400</span>);<br>        QMessageBox::information(<span class="hljs-literal">nullptr</span>, <span class="hljs-string">u8&quot;通知&quot;</span>, <span class="hljs-string">u8&quot;信号已相应&quot;</span>);<br>        &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>先点销毁，再点击测试，不会崩溃。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>查看Qt助手，<code>disconnect</code>中有如下说明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">[<span class="hljs-keyword">static</span>] <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> PointerToMemberFunction&gt; <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">QObject::disconnect</span><span class="hljs-params">(<span class="hljs-keyword">const</span> QObject *sender, PointerToMemberFunction signal, <span class="hljs-keyword">const</span> QObject *receiver, PointerToMemberFunction method)</span></span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>A signal-slot connection is removed when either of the objects involved are destroyed.</p>
+</blockquote>
+<p>如下所示新式<code>connect</code>重载：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">[<span class="hljs-keyword">static</span>] <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> PointerToMemberFunction, <span class="hljs-keyword">typename</span> Functor&gt; [QMetaObject::Connection](qmetaobject-connection.html) QObject::connect(<span class="hljs-keyword">const</span> [QObject](qobject.html#QObject) **sender*, PointerToMemberFunction *signal*, Functor *functor*)<br></code></pre></td></tr></table></figure>
+
+<p>有如下说明：</p>
+<blockquote>
+<p>The connection will automatically disconnect if the sender is destroyed. However, you should take care that any objects used within the functor are still alive when the signal is emitted.</p>
+</blockquote>
+<p>对于如下所示旧式<code>connect</code>重载：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">QMetaObject::Connection <span class="hljs-title">QObject::connect</span><span class="hljs-params">(<span class="hljs-keyword">const</span> QObject *sender, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *signal, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *method, Qt::ConnectionType type = Qt::AutoConnection)</span> <span class="hljs-keyword">const</span></span><br></code></pre></td></tr></table></figure>
+
+<p>有如下说明:</p>
+<blockquote>
+<p>This function overloads connect().</p>
+<p>Equivalent to connect(<em>sender</em>, <em>signal</em>, this, <em>method</em>, <em>type</em>).</p>
+</blockquote>
+<p>所以虽然都省略了<code>receiver</code>, 但是意义却不同。</p>
+<p>对于形如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">[<span class="hljs-keyword">static</span>] <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> PointerToMemberFunction, <span class="hljs-keyword">typename</span> Functor&gt; [QMetaObject::Connection](qmetaobject-connection.html) QObject::connect(<span class="hljs-keyword">const</span> [QObject](qobject.html#QObject) **sender*, PointerToMemberFunction *signal*, Functor *functor*)<br></code></pre></td></tr></table></figure>
+
+<p>的新式<code>connect</code>函数，并不等同于省略了<code>receiver</code>, 只有当<code>sender</code>被<code>destroyed</code>时才会自动disconnect。所以需要保证<code>lambda</code>被调用时，其所捕获的对象还存在，否则就会崩溃。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ol>
+<li>采用新式不省略<code>receiver</code>的<code>connect</code>函数。</li>
+<li><code>disconnect(connection)</code>其中<code>QMetaObject::Connection connection = connect(........)</code></li>
+</ol>
+
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/noob/categories/Qt/">Qt</a>
+                    
+                      <a class="hover-with-bg" href="/noob/categories/Qt/%E4%BF%A1%E5%8F%B7%E6%A7%BD/">信号槽</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/noob/tags/Qt/">Qt</a>
+                    
+                  </div>
                 
               </div>
               
