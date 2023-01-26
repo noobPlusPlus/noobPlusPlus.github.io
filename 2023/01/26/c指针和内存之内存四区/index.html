@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="l">
   <meta name="keywords" content="">
-  <title>connect省略receiver会怎样 - noob</title>
+  <title>c指针和内存之内存四区 - noob</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="connect省略receiver会怎样">
+            <span class="h2" id="subtitle" title="c指针和内存之内存四区">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-01-23 20:39" pubdate>
-        2022年1月23日 晚上
+      <time datetime="2023-01-26 18:25" pubdate>
+        2023年1月26日 晚上
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      601 字
+      714 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9
+      8
        分钟
     </span>
   
@@ -224,57 +224,62 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">connect省略receiver会怎样</h1>
+            <h1 style="display: none">c指针和内存之内存四区</h1>
             
             <div class="markdown-body">
               <blockquote>
-<p>新式connect省略receiver导致崩溃的问题</p>
+<p>c内存四区介绍</p>
 </blockquote>
 <span id="more"></span>
 
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p><img src="image1.png" srcset="/img/loading.gif" alt="image1"></p>
-<p>有两个对话框<code>MainWindow</code>和<code>测试</code>，当点击<code>MainWindow</code>中的<code>测试</code>按钮时，<code>测试</code>窗口长宽变为400px，并弹出提示窗，如下所示：</p>
-<p><img src="image2.png" srcset="/img/loading.gif" alt="image2"></p>
-<p>当点击<code>销毁窗口</code>时，销毁<code>测试</code>窗口。</p>
-<p>代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c++">MainWindow::MainWindow(QWidget *parent)<br>    : QMainWindow(parent)<br>    , ui(<span class="hljs-keyword">new</span> Ui::MainWindow)<br>&#123;<br>    ui-&gt;setupUi(<span class="hljs-keyword">this</span>);<br>    dialog_ = <span class="hljs-keyword">new</span> Dialog(<span class="hljs-keyword">this</span>);<br>    dialog_-&gt;setWindowTitle(<span class="hljs-string">u8&quot;测试窗口&quot;</span>);<br>    dialog_-&gt;setFixedSize(<span class="hljs-number">200</span>, <span class="hljs-number">200</span>);<br>    dialog_-&gt;show();<br><br>    connect(ui-&gt;pushButton_2, &amp;QPushButton::clicked, [=]() &#123;<br>        dialog_-&gt;deleteLater();<br>        &#125;);<br><br>    connect(ui-&gt;pushButton, &amp;QPushButton::clicked,<br>        <span class="hljs-keyword">this</span>, &amp;MainWindow::senderButtonClicked);<br>   <br>&#125;<br><br>MainWindow::~MainWindow()<br>&#123;<br>    <span class="hljs-keyword">delete</span> ui;<br>&#125;<br><br>Dialog::Dialog(QWidget* parent)<br>    : QDialog(parent)<br>&#123;<br>    connect(<span class="hljs-keyword">static_cast</span>&lt;MainWindow*&gt;(parentWidget()), &amp;MainWindow::senderButtonClicked, [=]() &#123;<br>        <span class="hljs-keyword">this</span>-&gt;setFixedSize(<span class="hljs-number">400</span>, <span class="hljs-number">400</span>);<br>        QMessageBox::information(<span class="hljs-literal">nullptr</span>, <span class="hljs-string">u8&quot;通知&quot;</span>, <span class="hljs-string">u8&quot;信号已相应&quot;</span>);<br>        &#125;);<br>        <br>    <span class="hljs-comment">//connect(static_cast&lt;MainWindow*&gt;(parentWidget()), &amp;MainWindow::senderButtonClicked, this, [=]() &#123;</span><br>    <span class="hljs-comment">//    //只多了第三个参数，this</span><br>    <span class="hljs-comment">//    this-&gt;setFixedSize(400, 400);</span><br>    <span class="hljs-comment">//    QMessageBox::information(nullptr, u8&quot;通知&quot;, u8&quot;信号已相应&quot;);</span><br>    <span class="hljs-comment">//    &#125;);</span><br>&#125;<br><br>Dialog::~Dialog()<br>&#123;<br>   <br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前一直开发<code>Qt/C++</code>，虽然学过C，但是没在项目中使用过。无论是学习书《C++ Primer》，还是经验书《Effective C++》，都强调要和C分开，当成两种语言学习，导致最近在项目中使用纯C开发很不习惯，也出现了一些问题。</p>
+<p>不习惯的地方是没有了类，而最大的问题则是在内存管理上，甚至因为没有了STL，有时需要使用原生数组，而当原生数组和指针牵扯到一块，有时会更加较迷惑。</p>
+<p>之前编码一直倾向于<code>Qt style</code>，尤其是管理内存上。尽量不使用裸指针，自动管理内存，除非是第三方库需要，一般代码中极少出现<code>delete</code>、<code>free</code>关键字：</p>
+<p><code>C</code> &lt;——-&gt; <code>C++</code> &lt;——&gt; <code>Qt</code> &lt;——&gt; <code>JAVA/C#</code></p>
+<h3 id="传参时，更多的使用引用"><a href="#传参时，更多的使用引用" class="headerlink" title="传参时，更多的使用引用"></a>传参时，更多的使用引用</h3><p><code>c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">function1</span><span class="hljs-params">(<span class="hljs-keyword">const</span> InType* in)</span></span>;<br><br></code></pre></td></tr></table></figure>
 
-<p>如果先点销毁，再点击测试，程序崩溃在<code>this-&gt;setFixedSize(400, 400);</code>行。</p>
-<p>将代码改为如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++">Dialog::Dialog(QWidget* parent)<br>    : QDialog(parent)<br>&#123;<br>    connect(<span class="hljs-keyword">static_cast</span>&lt;MainWindow*&gt;(parentWidget()), &amp;MainWindow::senderButtonClicked, <span class="hljs-keyword">this</span>, [=]() &#123;<br>        <span class="hljs-comment">//只多了第三个参数，this</span><br>        <span class="hljs-keyword">this</span>-&gt;setFixedSize(<span class="hljs-number">400</span>, <span class="hljs-number">400</span>);<br>        QMessageBox::information(<span class="hljs-literal">nullptr</span>, <span class="hljs-string">u8&quot;通知&quot;</span>, <span class="hljs-string">u8&quot;信号已相应&quot;</span>);<br>        &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>c++</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">function1</span><span class="hljs-params">(<span class="hljs-keyword">const</span> InType&amp; in)</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">function1</span><span class="hljs-params">(<span class="hljs-keyword">const</span> InType* in = <span class="hljs-literal">nullptr</span>)</span></span>;<br><br></code></pre></td></tr></table></figure>
 
-<p>先点销毁，再点击测试，不会崩溃。</p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>查看Qt助手，<code>disconnect</code>中有如下说明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">[<span class="hljs-keyword">static</span>] <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> PointerToMemberFunction&gt; <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">QObject::disconnect</span><span class="hljs-params">(<span class="hljs-keyword">const</span> QObject *sender, PointerToMemberFunction signal, <span class="hljs-keyword">const</span> QObject *receiver, PointerToMemberFunction method)</span></span><br></code></pre></td></tr></table></figure>
-
-<blockquote>
-<p>A signal-slot connection is removed when either of the objects involved are destroyed.</p>
-</blockquote>
-<p>如下所示新式<code>connect</code>重载：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">[<span class="hljs-keyword">static</span>] <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> PointerToMemberFunction, <span class="hljs-keyword">typename</span> Functor&gt; [QMetaObject::Connection](qmetaobject-connection.html) QObject::connect(<span class="hljs-keyword">const</span> [QObject](qobject.html#QObject) **sender*, PointerToMemberFunction *signal*, Functor *functor*)<br></code></pre></td></tr></table></figure>
-
-<p>有如下说明：</p>
-<blockquote>
-<p>The connection will automatically disconnect if the sender is destroyed. However, you should take care that any objects used within the functor are still alive when the signal is emitted.</p>
-</blockquote>
-<p>对于如下所示旧式<code>connect</code>重载：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">QMetaObject::Connection <span class="hljs-title">QObject::connect</span><span class="hljs-params">(<span class="hljs-keyword">const</span> QObject *sender, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *signal, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *method, Qt::ConnectionType type = Qt::AutoConnection)</span> <span class="hljs-keyword">const</span></span><br></code></pre></td></tr></table></figure>
-
-<p>有如下说明:</p>
-<blockquote>
-<p>This function overloads connect().</p>
-<p>Equivalent to connect(<em>sender</em>, <em>signal</em>, this, <em>method</em>, <em>type</em>).</p>
-</blockquote>
-<p>所以虽然都省略了<code>receiver</code>, 但是意义却不同。</p>
-<p>对于形如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">[<span class="hljs-keyword">static</span>] <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> PointerToMemberFunction, <span class="hljs-keyword">typename</span> Functor&gt; [QMetaObject::Connection](qmetaobject-connection.html) QObject::connect(<span class="hljs-keyword">const</span> [QObject](qobject.html#QObject) **sender*, PointerToMemberFunction *signal*, Functor *functor*)<br></code></pre></td></tr></table></figure>
-
-<p>的新式<code>connect</code>函数，并不等同于省略了<code>receiver</code>, 只有当<code>sender</code>被<code>destroyed</code>时才会自动disconnect。所以需要保证<code>lambda</code>被调用时，其所捕获的对象还存在，否则就会崩溃。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ol>
-<li>采用新式不省略<code>receiver</code>的<code>connect</code>函数。</li>
-<li><code>disconnect(connection)</code>其中<code>QMetaObject::Connection connection = connect(........)</code></li>
+<ol>
+<li>在c++中指针可以设置默认值，而引用不可以。</li>
+<li>引用无须判断空指针，而指针必须判断。</li>
 </ol>
+<h3 id="返回值更多的通过return"><a href="#返回值更多的通过return" class="headerlink" title="返回值更多的通过return"></a>返回值更多的通过return</h3><p>我看的教程中，c语言更推荐通过参数返回，return返回错误码。<br>C++中，c++之父和Qt中都更推荐通过return返回值</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function">QString &amp;<span class="hljs-title">QString::insert</span><span class="hljs-params">(<span class="hljs-keyword">int</span> <span class="hljs-built_in">position</span>, <span class="hljs-keyword">const</span> QString &amp;str)</span></span><br></code></pre></td></tr></table></figure>
 
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Class1::function1</span><span class="hljs-params">(<span class="hljs-keyword">const</span> InType&amp; in, OutType&amp; out)</span></span>; <span class="hljs-comment">//方式1</span><br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Class1::function2</span><span class="hljs-params">(<span class="hljs-keyword">const</span> InType&amp; in, OutType* out)</span></span>; <span class="hljs-comment">//方式2</span><br></code></pre></td></tr></table></figure>
+
+<p>各有利弊，Qt官方推荐第二种<br>如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">QString::toInt</span><span class="hljs-params">(<span class="hljs-keyword">bool</span> *ok = Q_NULLPTR, <span class="hljs-keyword">int</span> base = <span class="hljs-number">10</span>)</span> <span class="hljs-keyword">const</span></span><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>指针可以设置默认值，而引用不可以</li>
+<li>在调用时，一目了然该参数为指针，调用者可以注意其可能改变输入值。而引用的调用方式和传值完全一样。</li>
+<li>引用无须判断空指针，而指针必须判断。</li>
+</ol>
+<p>趁着假期，找了个教程学习了一下，现总结如下。</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xl">QFrame *frame = new QFrame;<br><span class="hljs-comment">//不会自动适应图片，background-image图片尺寸不变，</span><br><span class="hljs-comment">//会重复或空出一块区域，取决于 background-repeat属性的设置</span><br><span class="hljs-function"><span class="hljs-title">frame</span>-&gt;</span>setStyleSheet(<span class="hljs-string">&quot;background-image:url(:/image/test.jpg)&quot;</span>);<br><span class="hljs-comment">//图片可以自动居中显示，控件大小改变时会自动拉伸，但是设置边框属性无效</span><br><span class="hljs-function"><span class="hljs-title">frame</span>-&gt;</span>setStyleSheet(<span class="hljs-string">&quot;border-image:url(:/image/test.jpg)&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>border-image：<ul>
+<li>图片可以自动居中显示；</li>
+<li>控件大小改变时会自动拉伸；</li>
+<li>但是设置边框属性无效；</li>
+<li>当控件大小需要改变或图片需要拉伸时使用。</li>
+</ul>
+</li>
+<li>background-iamge：<ul>
+<li>图片不会自动居中显示；</li>
+<li>可以设置其background-position:属性，使其居中显示，甚至可以利用该属性，灵活控制QPushButton中图标和文字的位置</li>
+<li>可以设置边框（border）的属性。</li>
+</ul>
+</li>
+<li>如果同时指定border-image和background-iamge，那么border-image在上</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://blog.csdn.net/guorong520/article/details/100707577">博客园</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
             </div>
             <hr>
             <div>
@@ -283,9 +288,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Qt/">Qt</a>
+                      <a class="hover-with-bg" href="/categories/c/">c</a>
                     
-                      <a class="hover-with-bg" href="/categories/Qt/%E4%BF%A1%E5%8F%B7%E6%A7%BD/">信号槽</a>
+                      <a class="hover-with-bg" href="/categories/c/%E6%8C%87%E9%92%88/">指针</a>
                     
                   </div>
                 
@@ -293,7 +298,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Qt/">Qt</a>
+                      <a class="hover-with-bg" href="/tags/c/">c</a>
                     
                   </div>
                 
@@ -306,18 +311,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/01/05/%E3%80%8AC%E5%92%8C%E6%8C%87%E9%92%88%E3%80%8B%E7%AC%94%E8%AE%B0/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">《C和指针》笔记</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/01/16/%E5%88%98%E5%85%B8%E6%AD%A6Qt%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C%E6%91%98%E5%BD%95/">
-                        <span class="hidden-mobile">刘典武Qt开发经验摘录</span>
+                      <a href="/2023/01/26/c%E6%8C%87%E9%92%88%E5%92%8C%E5%86%85%E5%AD%98%E4%B9%8B%E5%89%8D%E8%A8%80/">
+                        <span class="hidden-mobile">c指针和内存之前言</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
