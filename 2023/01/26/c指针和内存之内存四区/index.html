@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/noob/img/favicon.png">
-  <link rel="icon" type="image/png" href="/noob/melody-favicon.ico">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/melody-favicon.ico">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -23,7 +23,7 @@
 
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/noob/lib/hint/hint.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
   
     
@@ -48,17 +48,17 @@
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
 
 
-<link  rel="stylesheet" href="/noob/css/main.css" />
+<link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"gitee.com","root":"/noob/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":"82365797a7f92a0aa6495822ee0829a4","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+    var CONFIG = {"hostname":"noobplusplus.github.io","root":"/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":"82365797a7f92a0aa6495822ee0829a4","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
   </script>
-  <script  src="/noob/js/utils.js" ></script>
-  <script  src="/noob/js/color-schema.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
 <meta name="generator" content="Hexo 5.4.0"></head>
 
 
@@ -67,7 +67,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/noob/">&nbsp;<strong>noob</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>noob</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -84,7 +84,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/noob/">
+              <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
                 首页
               </a>
@@ -96,7 +96,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/noob/archives/">
+              <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
                 归档
               </a>
@@ -108,7 +108,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/noob/categories/">
+              <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 分类
               </a>
@@ -120,7 +120,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/noob/tags/">
+              <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
                 标签
               </a>
@@ -132,7 +132,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/noob/about/">
+              <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
                 关于
               </a>
@@ -157,7 +157,7 @@
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('/noob/img/default.png') no-repeat center center;
+         style="background: url('/img/default.png') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -235,21 +235,21 @@
 <h2 id="内存四区的建立流程"><a href="#内存四区的建立流程" class="headerlink" title="内存四区的建立流程"></a>内存四区的建立流程</h2><ol>
 <li>操作系统把物理硬盘代码load到存</li>
 <li>操作系统把c代码分成四个区</li>
-<li>操作系统找到main函数入口执行<br><img src="20230126.png" srcset="/noob/img/loading.gif" alt="内存四区的建立流程"></li>
+<li>操作系统找到main函数入口执行<br><img src="20230126.png" srcset="/img/loading.gif" alt="内存四区的建立流程"></li>
 </ol>
-<h2 id="各区元素分析"><a href="#各区元素分析" class="headerlink" title="各区元素分析"></a>各区元素分析</h2><p><img src="Snipaste_2023-01-26_18-37-12.png" srcset="/noob/img/loading.gif" alt="各区元素分析"></p>
-<h2 id="函数调用模型"><a href="#函数调用模型" class="headerlink" title="函数调用模型"></a>函数调用模型</h2><p><img src="Snipaste_2023-01-26_18-40-40.png" srcset="/noob/img/loading.gif" alt="各区元素分析"><br><img src="Snipaste_2023-01-26_18-41-38.png" srcset="/noob/img/loading.gif" alt="各区元素分析-结束"></p>
+<h2 id="各区元素分析"><a href="#各区元素分析" class="headerlink" title="各区元素分析"></a>各区元素分析</h2><p><img src="Snipaste_2023-01-26_18-37-12.png" srcset="/img/loading.gif" alt="各区元素分析"></p>
+<h2 id="函数调用模型"><a href="#函数调用模型" class="headerlink" title="函数调用模型"></a>函数调用模型</h2><p><img src="Snipaste_2023-01-26_18-40-40.png" srcset="/img/loading.gif" alt="各区元素分析"><br><img src="Snipaste_2023-01-26_18-41-38.png" srcset="/img/loading.gif" alt="各区元素分析-结束"></p>
 <h2 id="全局区"><a href="#全局区" class="headerlink" title="全局区"></a>全局区</h2><p>如果两个静态变量的值一样，C编译器会自动优化，将两个变量的地址做成一样的</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">char</span>* <span class="hljs-title">getStr1</span><span class="hljs-params">()</span> </span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">char</span>* p = <span class="hljs-string">&quot;abcd&quot;</span>;<br>    <span class="hljs-keyword">return</span> p;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">char</span>* <span class="hljs-title">getStr2</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">char</span>* p = <span class="hljs-string">&quot;abcd&quot;</span>;<br>    <span class="hljs-keyword">return</span> p;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">char</span>* <span class="hljs-title">getStr3</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">char</span>* p = <span class="hljs-string">&quot;abcde&quot;</span>;<br>    <span class="hljs-keyword">return</span> p;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">char</span>* p1 = getStr1();<br>    <span class="hljs-keyword">char</span>* p2 = getStr2();<br>    <span class="hljs-keyword">char</span>* p3 = getStr3();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p1: %s,  p1 address: %d \n&quot;</span>, p1 ,p1);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p2: %s,  p2 address: %d \n&quot;</span>, p2, p2);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p3: %s,  p3 address: %d \n&quot;</span>, p3, p3);<br>    system(<span class="hljs-string">&quot;pause&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p><img src="Snipaste_2023-01-26_20-31-35.png" srcset="/noob/img/loading.gif" alt="运行结果"></p>
+<p><img src="Snipaste_2023-01-26_20-31-35.png" srcset="/img/loading.gif" alt="运行结果"></p>
 <p>c++编译器检查更严格，如果将文件后缀改为<code>.cpp</code>,将会报错：</p>
-<p><img src="Snipaste_2023-01-26_20-37-47.png" srcset="/noob/img/loading.gif" alt="编译错误"></p>
+<p><img src="Snipaste_2023-01-26_20-37-47.png" srcset="/img/loading.gif" alt="编译错误"></p>
 <h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">char</span>* <span class="hljs-title">getStr1</span><span class="hljs-params">()</span> </span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">char</span>* p = <span class="hljs-string">&quot;abcd&quot;</span>;<br>    <span class="hljs-keyword">return</span> p;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">char</span>* <span class="hljs-title">getStr2</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">char</span>* p = <span class="hljs-string">&quot;abcd&quot;</span>;<br>    <span class="hljs-keyword">return</span> p;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">char</span>* <span class="hljs-title">getStr3</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">char</span>* p = <span class="hljs-string">&quot;abcde&quot;</span>;<br>    <span class="hljs-keyword">return</span> p;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">char</span>* <span class="hljs-title">getStrError</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">char</span> buf[<span class="hljs-number">100</span>] = &#123; <span class="hljs-number">0</span> &#125;;<br>    strcpy_s(buf, <span class="hljs-number">100</span>,<span class="hljs-string">&quot;abcde&quot;</span>);<br>    <span class="hljs-keyword">return</span> buf;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">//此处画图就直观的感受到错误</span><br>    <span class="hljs-comment">//char* pError = getStrError();</span><br>    <span class="hljs-comment">//printf(&quot;pError: %s \n&quot;, pError);</span><br><br>    <span class="hljs-keyword">int</span> n1 = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">int</span> n2 = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;n1 address: %d \n&quot;</span>, &amp;n1);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;n2: address: %d \n&quot;</span>, &amp;n2);<br>    <span class="hljs-keyword">char</span> c[<span class="hljs-number">100</span>] = &#123; <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>&#125;;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;c[0]: address: %d \n&quot;</span>, &amp;c[<span class="hljs-number">0</span>]);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;c[1]: address: %d \n&quot;</span>, &amp;c[<span class="hljs-number">1</span>]);<br>    <span class="hljs-keyword">char</span>* p1 = getStr1();<br>    <span class="hljs-keyword">char</span>* p2 = getStr2();<br>    <span class="hljs-keyword">char</span>* p3 = getStr3();<br>    <span class="hljs-keyword">char</span>* p4 = (<span class="hljs-keyword">char</span>*)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">100</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p1: %s,  p1 value: %d, p1 address: %d \n&quot;</span>, p1 , p1, &amp;p1);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p2: %s,  p2 value: %d, p2 address: %d \n&quot;</span>, p2, p2, &amp;p2);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p3: %s,  p3 value: %d, p3 address: %d \n&quot;</span>, p3, p3, &amp;p3);<br><br>    <span class="hljs-keyword">char</span>** p5 = (<span class="hljs-keyword">char</span>**)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">3</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">char</span>*));<br>    <span class="hljs-keyword">char</span>* p6 = (<span class="hljs-keyword">char</span>*)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">4</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">char</span>));<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) <br>    &#123;<br>        p5[i] = (<span class="hljs-keyword">char</span>*)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">100</span>*<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">char</span>));<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p5[%d] value: %d， address: %d \n&quot;</span>, i, p5[i], &amp;p5[i]);<br>    &#125;<br><br>    <span class="hljs-keyword">char</span>* p7 = (<span class="hljs-keyword">char</span>*)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">4</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">char</span>));<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p5 value: %d, p5 address: %d \n&quot;</span>, p5, &amp;p5);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p6 value: %d, p6 address: %d \n&quot;</span>, p6, &amp;p6);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;p7 value: %d, p7 address: %d  \n&quot;</span>, p7, &amp;p7);<br><br>    <span class="hljs-comment">//未执行free</span><br>    system(<span class="hljs-string">&quot;pause&quot;</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
 
-<p>运行结果如下：<br><img src="Snipaste_2023-01-26_22-49-35.png" srcset="/noob/img/loading.gif" alt="运行结果"></p>
+<p>运行结果如下：<br><img src="Snipaste_2023-01-26_22-49-35.png" srcset="/img/loading.gif" alt="运行结果"></p>
 <p>函数调用过程是个动画的，需要在栈中动态改变，不好展现，可参考函数调用模型脑补，这里只画<code>main</code>函数的内存四区图。</p>
-<p><img src="stack_heap_map.png" srcset="/noob/img/loading.gif" alt="四区图"></p>
+<p><img src="stack_heap_map.png" srcset="/img/loading.gif" alt="四区图"></p>
 <p>注意：</p>
 <ol>
 <li>变量本质是存空间的别名，不要将变量名写到栈中</li>
@@ -267,9 +267,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/noob/categories/c/">c</a>
+                      <a class="hover-with-bg" href="/categories/c/">c</a>
                     
-                      <a class="hover-with-bg" href="/noob/categories/c/%E6%8C%87%E9%92%88/">指针</a>
+                      <a class="hover-with-bg" href="/categories/c/%E6%8C%87%E9%92%88/">指针</a>
                     
                   </div>
                 
@@ -277,7 +277,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/noob/tags/c/">c</a>
+                      <a class="hover-with-bg" href="/tags/c/">c</a>
                     
                   </div>
                 
@@ -294,7 +294,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/noob/2023/01/26/c%E6%8C%87%E9%92%88%E5%92%8C%E5%86%85%E5%AD%98%E4%B9%8B%E5%89%8D%E8%A8%80/">
+                      <a href="/2023/01/26/c%E6%8C%87%E9%92%88%E5%92%8C%E5%86%85%E5%AD%98%E4%B9%8B%E5%89%8D%E8%A8%80/">
                         <span class="hidden-mobile">c指针和内存之前言</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -411,15 +411,15 @@
 
 <script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
 <script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
-<script  src="/noob/js/debouncer.js" ></script>
-<script  src="/noob/js/events.js" ></script>
-<script  src="/noob/js/plugins.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
 
 <!-- Plugins -->
 
 
   
-    <script  src="/noob/js/lazyload.js" ></script>
+    <script  src="/js/lazyload.js" ></script>
   
 
 
@@ -462,10 +462,10 @@
 
 
 
-  <script  src="/noob/js/local-search.js" ></script>
+  <script  src="/js/local-search.js" ></script>
   <script>
     (function () {
-      var path = "/noob/local-search.xml";
+      var path = "/local-search.xml";
       var inputArea = document.querySelector("#local-search-input");
       inputArea.onclick = function () {
         searchFunc(path, 'local-search-input', 'local-search-result');
@@ -513,7 +513,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/noob/js/boot.js" ></script>
+<script  src="/js/boot.js" ></script>
 
 
 
