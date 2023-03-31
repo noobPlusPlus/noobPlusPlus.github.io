@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      1.3k 字
     </span>
   
 
@@ -233,6 +233,7 @@
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前一直开发<code>Qt/C++</code>，虽然学过C，但是没在项目中使用过。无论是学习书《C++ Primer》，还是经验书《Effective C++》，都强调要和C分开，当成两种语言学习，导致最近在项目中使用纯C开发很不习惯，也出现了一些问题。</p>
 <p>不习惯的地方是没有了类，而最大的问题则是在内存管理上，甚至因为没有了STL，有时需要使用原生数组，而当原生数组和指针牵扯到一块，有时会更加较迷惑。</p>
+<p>为了实现泛型, C语言容器使用了大量的<code>void*</code>，C++ <code>STL</code>是通过模板实现的，而且《Effctive STL》中强烈不建议在容器中存放指针，新式智能指针<code>shared_ptr</code>除外。</p>
 <p>之前编码一直倾向于<code>Qt style</code>，尤其是管理内存上。尽量不使用裸指针，自动管理内存，除非是第三方库需要，一般代码中极少出现<code>delete</code>、<code>free</code>关键字。</p>
 <p><code>QString</code>类存在导致几乎没有使用过<code>char*</code>, 进而不知道还有个全局区(搞C#的时候知道C#有这东西)</p>
 <p><code>C</code> &lt;——-&gt; <code>C++</code> &lt;——&gt; <code>Qt</code> &lt;——&gt; <code>JAVA/C#</code></p>
@@ -287,7 +288,7 @@
 <p>每个return前都要调用<code>file-&gt;close()</code>。<br>使用智能指针:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Class1::function</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">shared_ptr</span>&lt;File&gt; <span class="hljs-title">file</span><span class="hljs-params">(<span class="hljs-keyword">new</span> Test, [](File* _pointer) &#123;</span></span><br><span class="hljs-function"><span class="hljs-params">        <span class="hljs-comment">//其他操作</span></span></span><br><span class="hljs-function"><span class="hljs-params">        _pointer-&gt;close();</span></span><br><span class="hljs-function"><span class="hljs-params">        <span class="hljs-keyword">delete</span> _pointer;</span></span><br><span class="hljs-function"><span class="hljs-params">    &#125;)</span></span>;<br><br>	file-&gt;open();<br>	<span class="hljs-keyword">if</span>(<span class="hljs-comment">//条件1)</span><br>	&#123;<br>		<span class="hljs-keyword">return</span>;<br>	&#125;<br><br>	file-&gt;function1();<br>	<span class="hljs-keyword">if</span>(<span class="hljs-comment">//条件2)</span><br>	&#123;<br>		<span class="hljs-keyword">return</span>;<br>	&#125;		<br><br>	<span class="hljs-keyword">if</span>(<span class="hljs-comment">//条件3)</span><br>	&#123;<br>		<span class="hljs-keyword">return</span>;<br>	&#125;		<br><br>	...<br>&#125;;<br></code></pre></td></tr></table></figure>
 
-<h2 id="Qt隐式共享"><a href="#Qt隐式共享" class="headerlink" title="Qt隐式共享"></a>Qt隐式共享</h2><p>QString和Qt容器如QVector,QMap，都是隐式共享的，很多时候直接传值和返回值了。</p>
+<h2 id="容器和Qt隐式共享"><a href="#容器和Qt隐式共享" class="headerlink" title="容器和Qt隐式共享"></a>容器和Qt隐式共享</h2><p><code>STL</code>中式存值的。<br><code>QString</code>和<code>QTL</code>如<code>QVector</code>,<code>QMap</code>，都是隐式共享的，很多时候直接传值和返回值了。</p>
 <h2 id="Qt对象树"><a href="#Qt对象树" class="headerlink" title="Qt对象树"></a>Qt对象树</h2><p>Qt中使用对象树(object tree)来组织和管理所有的QObject类及其子类的对象。<br>当创建一个QObject对象时，会看到QObject的构造函数接收一个QObject指针作为参数，这个参数就是 parent，也就是父对象指针。我们创建的这个QObject对象会自动添加到其父对象的children()列表。当父对象被销毁时，这个QObject也会被销毁。</p>
 <p>有时候直接继承<code>QObject</code>，让父对象负责管理所有子对象(不止是UI控件), 此时就不用在析构函数中delete了，缺点是浪费资源。</p>
 

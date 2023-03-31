@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/melody-favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="l">
+  <meta name="keywords" content="">
+  <title>C语言封装 - noob</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"noobplusplus.github.io","root":"/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":"82365797a7f92a0aa6495822ee0829a4","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>noob</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="C语言封装">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-02-28 20:35" pubdate>
+        2023年2月28日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      833 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      13
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">C语言封装</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>C语言封装和C++封装</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>上一次写C代码，还是上学的时候写51单片机，后来就一直写C++。对C语言不太了解。<br>比如《Effective C++》条款2中强调</p>
+<blockquote>
+<p>尽量以const,enum,inline替换 #define</p>
+<p>头文件保护(也可以使用#pragma once)、控制编译除外<br>但是C大佬通常都是”宏孩儿”</p>
+</blockquote>
+<p>之前在哪本书或哪个地方的代码看到过封装，但是忘了。<br>因项目着急，而且受C内存问题困扰，再加上<code>LVGL</code>库<code>lv_obj_t</code>的“误导”，想着又不能隐藏数据，就没有封装。<br>写博客的时候才想到，<code>LVGL</code>这么暴漏细节，会不会是为了方便其他控件继承？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">///lv_obj.h</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">lv_obj_t</span> &#123;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">lv_obj_t</span>* <span class="hljs-title">parent</span>;</span>   <span class="hljs-comment">/**&lt; Pointer to the parent object*/</span><br>    <span class="hljs-keyword">lv_ll_t</span>           child_ll; <span class="hljs-comment">/**&lt; Linked list to store the children objects*/</span><br>    <span class="hljs-keyword">lv_area_t</span> coords; <span class="hljs-comment">/**&lt; Coordinates of the object (x1, y1, x2, y2)*/</span><br>    <span class="hljs-keyword">lv_event_cb_t</span>  event_cb;  <span class="hljs-comment">/**&lt; Event callback function */</span><br>    <span class="hljs-keyword">lv_signal_cb_t</span> signal_cb; <span class="hljs-comment">/**&lt; Object type specific signal function*/</span><br>    <span class="hljs-keyword">lv_design_cb_t</span> design_cb; <span class="hljs-comment">/**&lt; Object type specific design function*/</span><br>    <span class="hljs-keyword">void</span>*           ext_attr; <span class="hljs-comment">/**&lt; Object type specific extended data*/</span><br>    <span class="hljs-keyword">lv_style_list_t</span> style_list;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> LV_USE_EXT_CLICK_AREA == LV_EXT_CLICK_AREA_TINY</span><br>    <span class="hljs-keyword">uint8_t</span> ext_click_pad_hor; <span class="hljs-comment">/**&lt; Extra click padding in horizontal direction */</span><br>    <span class="hljs-keyword">uint8_t</span> ext_click_pad_ver; <span class="hljs-comment">/**&lt; Extra click padding in vertical direction */</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">elif</span> LV_USE_EXT_CLICK_AREA == LV_EXT_CLICK_AREA_FULL</span><br>    <span class="hljs-keyword">lv_area_t</span> ext_click_pad; <span class="hljs-comment">/**&lt; Extra click padding area. */</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br>    <span class="hljs-keyword">lv_coord_t</span> ext_draw_pad; <span class="hljs-comment">/**&lt; EXTend the size in every direction for drawing. */</span><br>    <span class="hljs-comment">/*Attributes and states*/</span><br>    <span class="hljs-keyword">uint8_t</span> click : <span class="hljs-number">1</span>;          <span class="hljs-comment">/**&lt; 1: Can be pressed by an input device*/</span><br>    <span class="hljs-keyword">uint8_t</span> drag : <span class="hljs-number">1</span>;           <span class="hljs-comment">/**&lt; 1: Enable the dragging*/</span><br>    <span class="hljs-keyword">uint8_t</span> drag_throw : <span class="hljs-number">1</span>;     <span class="hljs-comment">/**&lt; 1: Enable throwing with drag*/</span><br>    <span class="hljs-keyword">uint8_t</span> drag_parent : <span class="hljs-number">1</span>;    <span class="hljs-comment">/**&lt; 1: Parent will be dragged instead*/</span><br>    <span class="hljs-keyword">uint8_t</span> hidden : <span class="hljs-number">1</span>;         <span class="hljs-comment">/**&lt; 1: Object is hidden*/</span><br>    <span class="hljs-keyword">uint8_t</span> top : <span class="hljs-number">1</span>;            <span class="hljs-comment">/**&lt; 1: If the object or its children is clicked it goes to the foreground*/</span><br>    <span class="hljs-keyword">uint8_t</span> parent_event : <span class="hljs-number">1</span>;   <span class="hljs-comment">/**&lt; 1: Send the object&#x27;s events to the parent too. */</span><br>    <span class="hljs-keyword">uint8_t</span> adv_hittest : <span class="hljs-number">1</span>;    <span class="hljs-comment">/**&lt; 1: Use advanced hit-testing (slower) */</span><br>    <span class="hljs-keyword">uint8_t</span> gesture_parent : <span class="hljs-number">1</span>; <span class="hljs-comment">/**&lt; 1: Parent will be gesture instead*/</span><br>    <span class="hljs-keyword">uint8_t</span> focus_parent : <span class="hljs-number">1</span>;   <span class="hljs-comment">/**&lt; 1: Parent will be focused instead*/</span><br>    <span class="hljs-keyword">lv_drag_dir_t</span> drag_dir : <span class="hljs-number">3</span>; <span class="hljs-comment">/**&lt;  Which directions the object can be dragged in */</span><br>    <span class="hljs-keyword">lv_bidi_dir_t</span> base_dir : <span class="hljs-number">2</span>; <span class="hljs-comment">/**&lt; Base direction of texts related to this object */</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> LV_USE_GROUP != 0</span><br>    <span class="hljs-keyword">void</span>* group_p;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br>    <span class="hljs-keyword">uint8_t</span> protect; <span class="hljs-comment">/**&lt; Automatically happening actions can be prevented.</span><br><span class="hljs-comment">                          &#x27;OR&#x27;ed values from `lv_protect_t`*/</span><br>    <span class="hljs-keyword">lv_state_t</span> state;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> LV_USE_ID</span><br>    <span class="hljs-keyword">lv_id_t</span> id; <span class="hljs-comment">/**&lt; Unique object ID in screen*/</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> LV_USE_OBJ_REALIGN</span><br>    <span class="hljs-keyword">lv_realign_t</span> realign; <span class="hljs-comment">/**&lt; Information about the last call to ::lv_obj_align. */</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> LV_USE_USER_DATA</span><br>    <span class="hljs-keyword">lv_obj_user_data_t</span> user_data; <span class="hljs-comment">/**&lt; Custom user data for object. */</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br>&#125; <span class="hljs-keyword">lv_obj_t</span>;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="C-封装"><a href="#C-封装" class="headerlink" title="C++封装"></a>C++封装</h2><p>C++本来就是面向对象的，问题在于对于头文件中私有变量的隐藏。<br>模块之间通常是继承接口，对外暴漏接口比如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IPerson</span></span><br><span class="hljs-class">&#123;</span><br><span class="hljs-keyword">public</span>:<br>   IPerson() &#123;&#125;;<br>   <span class="hljs-keyword">virtual</span> ~IPerson()=<span class="hljs-number">0</span> &#123;&#125;; <br><br>   <span class="hljs-comment">//提供给外面使用的接口一般采用纯虚函数</span><br>   <span class="hljs-keyword">virtual</span>  <span class="hljs-keyword">void</span> SetName（<span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span> &amp;strName）= <span class="hljs-number">0</span>;<br>   <span class="hljs-keyword">virtual</span>  <span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span> GetName（）= <span class="hljs-number">0</span>;<br>   <span class="hljs-keyword">virtual</span>  <span class="hljs-keyword">void</span> Work（）= <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CTeacher</span>：<span class="hljs-title">public</span> <span class="hljs-title">IPerson</span></span><br><span class="hljs-class">&#123;</span><br><span class="hljs-keyword">public</span>:<br>   CTeacher()&#123;&#125;;<br>   <span class="hljs-keyword">virtual</span> ~CTeacher（）;<br>   <span class="hljs-keyword">void</span> SetName（<span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span> &amp;strName）<span class="hljs-keyword">override</span>;<br>   <span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span> GetName（）strName）<span class="hljs-keyword">override</span>;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-built_in">string</span> name_;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>模块内采用<code>Impl</code>模式</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// network.h</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NetworkV2</span> &#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Send</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> str)</span></span>;<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Recv</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> &amp;str)</span></span>;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Impl</span>;</span><br>    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">shared_ptr</span>&lt;Impl&gt; impl;<br>&#125;;<br><br><span class="hljs-comment">// network.cpp</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">NetworkV2</span>:</span>:Impl &#123;<br>    <span class="hljs-keyword">int</span> sockfd;<br>    <span class="hljs-keyword">char</span> buf[<span class="hljs-number">1024</span>];<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">NetworkV2::Send</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> str)</span> </span>&#123;<br>    <span class="hljs-comment">// TODO ...</span><br>    <span class="hljs-comment">// send(impl-&gt;sockfd, str.c_str(), str.size(), 0);</span><br>    <span class="hljs-keyword">return</span> str.size();<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">NetworkV2::Recv</span><span class="hljs-params">(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> &amp;str)</span> </span>&#123;<br>    <span class="hljs-comment">// TODO ...</span><br>    <span class="hljs-comment">// recv(impl-&gt;sockfd, impl-&gt;buf, 1024, 0);</span><br>    <span class="hljs-keyword">return</span> str.size();<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="C封装"><a href="#C封装" class="headerlink" title="C封装"></a>C封装</h2><p>由于本人懒加上谷歌不推荐使用前置声明，就很少使用前置声明。<br><a target="_blank" rel="noopener" href="https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/headers/">google-style</a>-1.3. 前置声明</p>
+<p>查看C语言第三方容器库中<code>Array</code>的代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//array.h</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">array_s</span> <span class="hljs-title">Array</span>;</span><br><br><span class="hljs-comment">//array.c</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">array_s</span> &#123;</span><br>    <span class="hljs-keyword">size_t</span> size;<br>    <span class="hljs-keyword">size_t</span> capacity;<br>    <span class="hljs-keyword">float</span>  exp_factor;<br>    <span class="hljs-keyword">void</span>** buffer;<br>    <span class="hljs-keyword">void</span>* (*mem_alloc)(<span class="hljs-keyword">size_t</span> size);<br>    <span class="hljs-keyword">void</span>* (*mem_calloc)(<span class="hljs-keyword">size_t</span> blocks, <span class="hljs-keyword">size_t</span> size);<br>    <span class="hljs-keyword">void</span> (*mem_free)(<span class="hljs-keyword">void</span>* block);<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>c语言封装就是利用前置声明实现的。</p>
+<p>原来之前在书上见过这段代码，只不过当时在写C++没在意</p>
+<p><img src="1.png" srcset="/img/loading.gif" alt="架构整洁之道"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/c/">c</a>
+                    
+                      <a class="hover-with-bg" href="/categories/c/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">编码规范</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/c/">c</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/26/c%E6%8C%87%E9%92%88%E5%92%8C%E5%86%85%E5%AD%98%E4%B9%8B%E5%86%85%E5%AD%98%E5%9B%9B%E5%8C%BA/">
+                        <span class="hidden-mobile">c指针和内存之内存四区</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?82365797a7f92a0aa6495822ee0829a4";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
